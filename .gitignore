@@ -1,0 +1,16 @@
+/stock/
+
+# C/C++
+*.o
+*.out
+
+# Java
+*.class
+*.jar
+hs_err_pid*
+
+# Python
+*.py[cod]
+
+# Ruby
+.env
