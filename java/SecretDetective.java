@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -110,10 +109,10 @@ public class SecretDetective {
    * </pre>
    */
   public char[][] makeSecret(String secret) {
-    boolean isSolved = false;
+    List<Letter> letters = new ArrayList<>(secret.length());
     Random rand = new Random();
     char[][] result = null;
-    List<char[]> triplets = new LinkedList<>();
+    List<char[]> triplets = new ArrayList<>();
     
     // Get rid of duplicate chars
     Set<Character> dups = new HashSet<>();
@@ -131,24 +130,24 @@ public class SecretDetective {
     secret = newSecret.toString();
     if(secret.length() < 3) { throw new RuntimeException("Too few chars"); }
     
+    // Convert secret to Letters for the scores
+    clear(); // Reset #nextScore
+    for(int i = 0; i < secret.length(); ++i) {
+      letters.add(new Letter(secret.charAt(i)));
+    }
+    
     while(true) {
-      List<Letter> letters = new ArrayList<>(secret.length());
+      List<Letter> sampleLetters = new ArrayList<>(letters);
       char[] triplet = new char[3];
       Letter[] tripletLetters = new Letter[3];
       
-      // Convert secret to Letters for the scores
-      clear(); // Reset #nextScore
-      for(int i = 0; i < secret.length(); ++i) {
-        letters.add(new Letter(secret.charAt(i)));
-      }
-      
       // Take random samples and sort
       for(int i = 0; i < 3; ++i) {
-        tripletLetters[i] = letters.remove(rand.nextInt(letters.size()));
+        tripletLetters[i] = sampleLetters.remove(rand.nextInt(sampleLetters.size()));
       }
       Arrays.sort(tripletLetters);
       
-      // Convert sorted samples to char[] and add to list
+      // Convert sorted samples to char[] (triplet) and add to triplets
       for(int i = 0; i < 3; ++i) {
         triplet[i] = tripletLetters[i].value;
       }
@@ -156,21 +155,7 @@ public class SecretDetective {
       
       // Test these triplets to see if they work
       result = triplets.toArray(new char[triplets.size()][3]);
-      
-      if(isSolved || recoverSecret(result,false).equals(secret)) {
-        isSolved = true;
-        
-        boolean hasUniqueScores = true;
-        int prevScore = -1;
-        
-        // If isSolved, then #map should be empty because of above #clear()
-        for(Letter l: map.values().stream().sorted().toArray(Letter[]::new)) {
-          if(l.score == prevScore) { hasUniqueScores = false; break; }
-          prevScore = l.score;
-        }
-        
-        if(hasUniqueScores) { break; }
-      }
+      if(recoverSecret(result,false).equals(secret)) { break; }
     }
     
     return result;
