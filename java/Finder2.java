@@ -31,6 +31,7 @@ import java.util.Scanner;
  * 
  * @author Jonathan Bradley Whited (@esotericpig)
  * @see    https://www.codewars.com/kata/path-finder-number-2-shortest-path/java
+ * @see    http://geneticalgorithms.ai-depot.com/Tutorial/Overview.html
  * @rank   4 kyu
  */
 public class Finder2 {
