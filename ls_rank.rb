@@ -83,18 +83,28 @@ class LsRank
     end
     
     @ranks.select!{|rank,files| rank == @opts[:rank]} unless @opts[:rank].nil?()
-    @ranks = @ranks.sort()
+    @ranks = @ranks.sort().to_h()
+    
+    if @opts[:markdown]
+      print '[ '
+      @ranks.each_key().with_index() do |rank,i|
+        print "[#{rank} kyu](\##{rank}-kyu)"
+        print ' | ' if i < (@ranks.length - 1)
+      end
+      puts ' ]'
+      puts
+    end
     
     @ranks.each_with_index() do |(rank,files),i|
       if @opts[:markdown]
-        puts "**#{rank} kyu**"
+        puts "### [#{rank} kyu](\#by-rank)"
         puts
       end
       
       files.sort!()
       files.each_with_index() do |file,j|
         if @opts[:markdown]
-          puts "* [#{file.filename}](#{file.filename})"
+          puts "- [#{file.filename}](#{file.filename})"
         else
           puts file.filename
           
