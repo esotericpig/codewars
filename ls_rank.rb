@@ -66,7 +66,7 @@ class LsRank
         if parse_comment
           file.comment << line
           
-          if file.rank.nil?() && line =~ /@rank/
+          if file.rank.nil?() && line.include?('@rank')
             file.rank = line.gsub(/\D+/,'').to_i()
             file.rank = nil if file.rank <= 0
           end
