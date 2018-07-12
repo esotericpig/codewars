@@ -10,7 +10,11 @@ require 'optparse'
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = 1.0
+  VERSION = 1.1
+  
+  BEGIN_TAGS = ['###','/**','"""']
+  END_TAGS = ['###',' */','"""']
+  RANK_TAGS = ['@rank','rank:']
   
   attr_reader :args
   attr_reader :opts
@@ -66,13 +70,13 @@ class LsRank
         if parse_comment
           file.comment << line
           
-          if file.rank.nil?() && line.include?('@rank')
+          if file.rank.nil?() && RANK_TAGS.any?{|rank_tag| line.include?(rank_tag)}
             file.rank = line.gsub(/\D+/,'').to_i()
             file.rank = nil if file.rank <= 0
           end
           
-          break if tag == '###' || tag == ' */'
-        elsif tag == '###' || tag == '/**'
+          break if END_TAGS.include?(tag)
+        elsif BEGIN_TAGS.include?(tag)
           file.comment << line
           parse_comment = true
         end
