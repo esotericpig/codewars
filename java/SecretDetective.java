@@ -81,8 +81,7 @@ public class SecretDetective {
         Letter letter = getLetterOrDefault(value);
         
         letter.addNeighbors(triplet,i);
-        letter.checkLows();
-        letter.checkHighs();
+        letter.checkNeighbors();
       }
     }
     
@@ -202,7 +201,40 @@ public class SecretDetective {
       }
     }
     
-    public void checkLows() {
+    public void checkNeighbors() {
+      checkNeighbors(-1); // Low neighbors
+      checkNeighbors(1);  // High neighbors
+    }
+    
+    public void checkNeighbors(int which) {
+      if(which == 0) { return; }
+      
+      Set<Letter> main = (which < 0) ? lows : highs;
+      Set<Letter> sub = (which < 0) ? highs : lows;
+      boolean shift = false;
+      
+      for(Letter m: main) {
+        // Is the score wrong and should be higher or lower?
+        if((which < 0 && score <= m.score) ||
+           (which > 0 && score >= m.score)) {
+          score = (which < 0) ? (m.score + (SCORE_INC / 2)) : (m.score / 2);
+          shift = true;
+        }
+        
+        // Shift highs up or lows down for new adjusted score
+        if(shift) {
+          for(Letter s: sub) {
+            s.checkNeighbors(which);
+          }
+        }
+      }
+    }
+    
+    // This was my original solution.
+    // Converted these 2 methods into 1 (slower) method: #checkNeighbors(...).
+    // I did this so that it'd be easier to modify and understand.
+    // Leaving the code here for historical purposes.
+    /*public void checkLows() {
       boolean checkHighs = false;
       
       for(Letter low: lows) {
@@ -234,7 +266,7 @@ public class SecretDetective {
           low.checkHighs();
         }
       }
-    }
+    }*/
     
     public int compareTo(Letter l) {
       return score - l.score;
