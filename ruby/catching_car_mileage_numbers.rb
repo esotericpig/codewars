@@ -84,3 +84,8 @@ puts is_interesting(12821,[1337,256]) # 2
 puts is_interesting(10801,[1337,256]) # 2
 puts is_interesting(12345,[1337,256]) # 2
 puts is_interesting(54321,[1337,256]) # 2
+
+puts unless ARGV.empty?
+ARGV.each do |arg|
+  puts "#{arg} => #{is_interesting(arg.to_i,[1337,256,1987,2012,42])}"
+end
