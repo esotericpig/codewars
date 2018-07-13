@@ -10,7 +10,7 @@ require 'optparse'
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = 1.1
+  VERSION = '1.1.1'
   
   BEGIN_TAGS = ['###','/**','"""']
   END_TAGS = ['###',' */','"""']
@@ -101,14 +101,13 @@ class LsRank
     
     @ranks.each_with_index() do |(rank,files),i|
       if @opts[:markdown]
-        puts "### [#{rank} kyu](\#by-rank)"
-        puts
+        puts "- ### [#{rank} kyu](\#by-rank)"
       end
       
       files.sort!()
       files.each_with_index() do |file,j|
         if @opts[:markdown]
-          puts "- [#{file.filename}](#{file.filename})"
+          puts "    - [#{file.filename}](#{file.filename})"
         else
           puts file.filename
           
