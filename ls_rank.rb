@@ -2,10 +2,18 @@
 
 require 'optparse'
 
+LS_RANK_RUBY_VERSION = 2.4
+
+if defined?(RUBY_VERSION) && RUBY_VERSION.is_a?(String) &&
+    RUBY_VERSION.gsub(/[^\d\.]+/,'').to_f() < LS_RANK_RUBY_VERSION
+  puts "WARN: Ruby v#{RUBY_VERSION} is less than the recommended version of #{LS_RANK_RUBY_VERSION}."
+  puts
+end
+
 ###
-# Do one of the following for usage:
-# - $ ruby ls_rank.rb --help
-# - $ chmod +x ls_rank.rb && ./ls_rank.rb --help
+# Do for usage: ruby ls_rank.rb --help
+# 
+# Ruby v2.4+ required.
 # 
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
