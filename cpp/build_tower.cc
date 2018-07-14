@@ -25,25 +25,26 @@ public:
     
     return tower;
   }
-  
-  void cout(std::vector<std::string> tower) {
-    for(std::string s: tower) {
-      std::cout << s << std::endl;
-    }
-  }
 };
+
+std::ostream& operator<<(std::ostream& out,std::vector<std::string> tower) {
+  for(std::string s: tower) {
+    out << s << std::endl;
+  }
+  return out;
+}
 
 int main(int argc,char** argv) {
   Kata k;
   
-  k.cout(k.towerBuilder(11));
+  std::cout << k.towerBuilder(11);
   
   if(argc > 1) {
     for(int i = 1; i < argc; ++i) {
       int nFloors = std::atoi(argv[i]);
       
       std::cout << std::endl << nFloors << ':' << std::endl;
-      k.cout(k.towerBuilder(nFloors));
+      std::cout << k.towerBuilder(nFloors);
     }
   }
   
