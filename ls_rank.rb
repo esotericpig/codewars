@@ -18,7 +18,7 @@ end
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = '1.1.1'
+  VERSION = '1.1.2'
   
   BEGIN_TAGS = ['###','/**','"""']
   END_TAGS = ['###',' */','"""']
@@ -42,8 +42,10 @@ class LsRank
       op.separator 'Options:'
       op.on('-c','--comment','Show header comment block')
       op.on('-m','--markdown','Show markdown for README.md')
-      op.on('-r','--rank <rank>','Show code with <rank> kyu only (number)') do |rank|
-        @opts[:rank] = rank.to_i()
+      op.on('-r','--rank <rank>','Show code with <rank> kyu only (number; 0 for all)') do |rank|
+        rank = rank.to_i()
+        rank = nil if rank < 1
+        rank
       end
       
       op.separator op.summary_indent + '---'
@@ -59,7 +61,9 @@ class LsRank
       op.separator ''
       op.separator 'Examples:'
       op.separator op.summary_indent + "#{op.program_name} -r 4"
-      op.separator op.summary_indent + "#{op.program_name} -r 4 -c"
+      op.separator op.summary_indent + "#{op.program_name} -r 0"
+      op.separator op.summary_indent + "#{op.program_name} -c"
+      op.separator op.summary_indent + "#{op.program_name} -c -r 7 # Ronaldo?"
       op.separator op.summary_indent + "#{op.program_name} -m"
       op.separator op.summary_indent + "#{op.program_name} -m -r 5"
     end
@@ -91,7 +95,13 @@ class LsRank
       end
       
       next if file.rank.nil?()
-      @ranks[file.rank].push(file)
+      
+      if @opts[:rank].nil?() && !@opts[:markdown]
+        # For all ranks (non-markdown), show the files as if flattened
+        @ranks[0].push(file)
+      else
+        @ranks[file.rank].push(file)
+      end
     end
     
     @ranks.select!{|rank,files| rank == @opts[:rank]} unless @opts[:rank].nil?()
