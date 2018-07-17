@@ -94,7 +94,7 @@ public class Finder {
     // big_maze.txt
     /*java.io.BufferedReader fin = null;
     try {
-      fin = new java.io.BufferedReader(new java.io.FileReader("big_maze.txt"));
+      fin = new java.io.BufferedReader(new java.io.FileReader("../data/finder_big_maze.txt"));
       
       String line = null;
       StringBuilder mazeStr = new StringBuilder();
