@@ -194,7 +194,7 @@ public class AssemblerInterpreterPartII {
     
     public void exec() {
       var1 = args.get(1);
-      num1 = regs.getOrDefault(var1,0);
+      num1 = var1.matches("\\d+") ? Integer.parseInt(var1) : regs.getOrDefault(var1,0);
       
       switch(args.get(0)) {
         case "dec": --num1; break;
