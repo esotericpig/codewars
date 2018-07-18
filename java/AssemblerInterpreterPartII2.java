@@ -123,7 +123,7 @@ public class AssemblerInterpreterPartII2 {
       return inst;
     }
     
-    // <word> | <single quoted string> | <comma> | <comment>
+    // <instruction> | <single quoted string> | <comma> | <comment>
     Matcher matcher = Pattern.compile("[^\\s',;]+|'[^']*'|,|;.*").matcher(line);
     List<String> args = new ArrayList<String>(2); // Usually 2
     
@@ -186,45 +186,45 @@ public class AssemblerInterpreterPartII2 {
     protected int index;
     
     public abstract void exec();
-    public void init() {}
-  }
-  
-  public abstract class Num1Inst extends Inst {
-    protected int num1;
-    protected String var1;
     
-    public void exec() {
-      var1 = args.get(1);
-      num1 = regs.getOrDefault(var1,0);
-    }
-    
-    public void setVar1(int num) {
-      regs.put(var1,num1 = num);
+    public void init() {
+      args.remove(0); // Remove instruction name
     }
   }
   
-  public abstract class Num2Inst extends Num1Inst {
-    protected int num2;
-    protected String var2;
+  public abstract class NumInst extends Inst {
+    protected int[] nums;
+    protected String[] vars;
     
     public void exec() {
-      super.exec();
-      var2 = args.get(2);
-      
-      if(var2.matches("\\d+")) {
-        num2 = Integer.parseInt(var2);
-        var2 = null;
-      }
-      else {
-        num2 = regs.get(var2);
+      for(int i = 0; i < args.size(); ++i) {
+        String arg = args.get(i);
+        
+        if(arg.matches("\\d+")) {
+          nums[i] = Integer.parseInt(arg);
+        }
+        else {
+          nums[i] = regs.getOrDefault(arg,0);
+          vars[i] = arg;
+        }
       }
     }
+    
+    public void init() {
+      super.init();
+      nums = new int[args.size()];
+      vars = new String[args.size()];
+    }
+    
+    public void setVar(int index,int num) {
+      regs.put(vars[index],nums[index] = num);
+    }
   }
   
-  public class AddInst extends Num2Inst {
+  public class AddInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(num1 + num2);
+      setVar(0,nums[0] + nums[1]);
     }
   }
   
@@ -235,24 +235,24 @@ public class AssemblerInterpreterPartII2 {
     }
   }
   
-  public class CmpInst extends Num2Inst {
+  public class CmpInst extends NumInst {
     public void exec() {
       super.exec();
-      prevCmp = num1 - num2;
+      prevCmp = nums[0] - nums[1];
     }
   }
   
-  public class DecInst extends Num1Inst {
+  public class DecInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(--num1);
+      setVar(0,--nums[0]);
     }
   }
   
-  public class DivInst extends Num2Inst {
+  public class DivInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(num1 / num2);
+      setVar(0,nums[0] / nums[1]);
     }
   }
   
@@ -266,6 +266,7 @@ public class AssemblerInterpreterPartII2 {
     public void init() {
       String name = args.get(0);
       name = name.substring(0,name.length() - 1);
+      
       args.set(0,name);
       funcs.put(name,this);
     }
@@ -273,10 +274,10 @@ public class AssemblerInterpreterPartII2 {
     public void exec() {}
   }
   
-  public class IncInst extends Num1Inst {
+  public class IncInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(++num1);
+      setVar(0,++nums[0]);
     }
   }
   
@@ -303,7 +304,7 @@ public class AssemblerInterpreterPartII2 {
   public class JmpInst extends Inst {
     public void exec() {
       if(isJmp()) {
-        FuncInst funcInst = funcs.get(args.get(1));
+        FuncInst funcInst = funcs.get(args.get(0));
         gotoIndex = funcInst.index;
       }
     }
@@ -315,30 +316,25 @@ public class AssemblerInterpreterPartII2 {
     public boolean isJmp() { return prevCmp != 0; }
   }
   
-  public class MovInst extends Num2Inst {
+  public class MovInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(num2);
+      setVar(0,nums[1]);
     }
   }
   
   public class MsgInst extends Inst {
     public void exec() {
-      for(int i = 1; i < args.size(); ++i) {
-        String arg = args.get(i);
-        
-        if(arg.charAt(0) == '\'') {
-          out.append(arg.substring(1,arg.length() - 1));
-        }
-        else { out.append(regs.get(arg)); }
+      for(String arg: args) {
+        out.append(arg.charAt(0) == '\'' ? arg.substring(1,arg.length() - 1) : regs.get(arg));
       }
     }
   }
   
-  public class MulInst extends Num2Inst {
+  public class MulInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(num1 * num2);
+      setVar(0,nums[0] * nums[1]);
     }
   }
   
@@ -350,10 +346,10 @@ public class AssemblerInterpreterPartII2 {
     }
   }
   
-  public class SubInst extends Num2Inst {
+  public class SubInst extends NumInst {
     public void exec() {
       super.exec();
-      setVar1(num1 - num2);
+      setVar(0,nums[0] - nums[1]);
     }
   }
 }
