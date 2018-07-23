@@ -93,16 +93,18 @@ print_2da('Puzzle:',puzzle)
 print_2da('Result:',result)
 
 # If you really want to type it all in...
-# Example: python3 sudoku_solver.py 5 3 0 0 7 0 0 0 0 6 0 0 1 9 5 0 0 0 0 9 8 0 0 0 0 6 0 8 0 0 0 6 0 0 0 3 4 0 0 8 0 3 0 0 1 7 0 0 0 2 0 0 0 6 0 6 0 0 0 0 2 8 0 0 0 0 4 1 9 0 0 5 0 0 0 0 8 0 0 7 9
-if len(sys.argv) >= 82:
-  print()
-  
-  puzzle = []
+# Example: python3 sudoku_solver.py 530070000600195000098000060800060003400803001700020006060000280000419005000080079
+if len(sys.argv) > 1:
   for i in range(1,len(sys.argv)):
-    puzzle.append(int(sys.argv[i]))
-  
-  puzzle = np.reshape(puzzle,(9,9)).tolist()
-  result = sudoku(deepcopy(puzzle))
-  
-  print_2da('Puzzle from args:',puzzle)
-  print_2da('Result from args:',result)
+    print()
+    arg = sys.argv[i]
+    
+    if len(arg) != 81:
+      print('Skipping arg[{}]: len of {} != 81'.format(i,len(arg)))
+      continue
+    
+    puzzle = np.reshape(list(map(int,arg)),(9,9)).tolist()
+    result = sudoku(deepcopy(puzzle))
+    
+    print_2da('Puzzle from arg[{}]:'.format(i),puzzle)
+    print_2da('Result from arg[{}]:'.format(i),result)
