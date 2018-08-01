@@ -134,7 +134,7 @@ class Board:
   
   def __hash__(self):
     if self.cached_hash is None:
-      self.cached_hash = hash(tuple(itertools.chain.from_iterator(self.board)))
+      self.cached_hash = hash(tuple(itertools.chain.from_iterable(self.board)))
     return self.cached_hash
   
   # Used for guesses/backtracking.
@@ -255,6 +255,7 @@ class Board:
     self.bit_columns[cell.x] |= bit_num
     self.bit_rows[cell.y] |= bit_num
     self.board[cell.y][cell.x] = num
+    self.cached_hash = None
     
     if index is None:
       try:
