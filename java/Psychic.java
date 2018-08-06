@@ -68,7 +68,7 @@ public class Psychic {
     field.set(obj,value);
   }
   
-  public Random getMathRand() throws Exception {
+  public static Random getMathRand() throws Exception {
     Class holder = Class.forName("java.lang.Math$RandomNumberGeneratorHolder");
     Field field = holder.getDeclaredField("randomNumberGenerator");
     
