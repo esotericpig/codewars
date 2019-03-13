@@ -187,17 +187,16 @@ public class SecretDetective {
     }
     
     public void addNeighbors(char[] triplet,int index) {
-      addNeighbors(triplet,index,-1); // Low neighbors
-      addNeighbors(triplet,index,1);  // High neighbors
+      addNeighbors(triplet,index,-1,lows); // Low neighbors
+      addNeighbors(triplet,index,1,highs); // High neighbors
     }
     
-    public void addNeighbors(char[] triplet,int index,int step) {
+    public void addNeighbors(char[] triplet,int index,int step,Set<Letter> neighbors) {
       for(index += step; index >= 0 && index < triplet.length; index += step) {
         char value = triplet[index];
         Letter neighbor = getLetterOrDefault(value);
         
-        if(step < 0) { lows.add(neighbor); }
-        else { highs.add(neighbor); }
+        neighbors.add(neighbor);
       }
     }
     
