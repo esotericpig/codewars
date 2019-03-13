@@ -18,20 +18,23 @@ end
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = '1.1.2'
+  VERSION = '1.2.0'
   
   BEGIN_TAGS = ['###','/**','"""']
   END_TAGS = ['###',' */','"""']
+  PICS_DIR = 'pics'
   RANK_TAGS = ['@rank','rank:']
   
   attr_reader :args
   attr_reader :opts
   attr_reader :parser
+  attr_reader :pics
   attr_reader :ranks
   
   def initialize(args)
     @args = args
     @opts = {}
+    @pics = {}
     @ranks = {}
     
     @parser = OptionParser.new() do |op|
@@ -70,9 +73,13 @@ class LsRank
   end
   
   def ls()
+    ls_pics()
+    
     @ranks = Hash.new{|h,k| h[k] = []}
     
     Dir.glob(File.join('*','*.*')) do |filename|
+      next if filename =~ /#{PICS_DIR}[\/\\]/i
+      
       file = LsRankFile.new(filename)
       parse_comment = false
       
@@ -95,6 +102,13 @@ class LsRank
       end
       
       next if file.rank.nil?()
+      
+      basename = File.basename(filename,'.*')
+      dirname = File.dirname(filename)
+      
+      if !(pics = @pics[dirname][basename]).nil?()
+        file.pics = "[ #{pics.join(' | ')} ]"
+      end
       
       if @opts[:rank].nil?() && !@opts[:markdown]
         # For all ranks (non-markdown), show the files as if flattened
@@ -125,7 +139,8 @@ class LsRank
       files.sort!()
       files.each_with_index() do |file,j|
         if @opts[:markdown]
-          puts "    - [#{file.filename}](#{file.filename})"
+          print "    - [#{file.filename}](#{file.filename})"
+          puts (file.pics.nil?() ? '' : " #{file.pics}")
         else
           puts file.filename
           
@@ -140,6 +155,30 @@ class LsRank
       end
       
       puts if @opts[:markdown]
+    end
+  end
+  
+  def ls_pics()
+    @pics = Hash.new{|h,k| h[k] = {}}
+    
+    Dir.glob(File.join(PICS_DIR,'*.*')) do |filename|
+      basename = File.basename(filename)
+      basename = basename.split('_',2)
+      
+      next if basename.length != 2
+      
+      lang = basename[0]
+      name = basename[1]
+      ext = File.extname(name).strip
+      ext = ext[1..-1] if ext.length > 0
+      name = File.basename(name,'.*')
+      
+      # For future extensions, do: (gif|png|...)
+      next unless ext =~ /(gif)/i
+      
+      md = @pics[lang][name]
+      @pics[lang][name] = (md = []) if md.nil?()
+      md.push("[#{ext}](#{filename})")
     end
   end
   
@@ -162,11 +201,13 @@ end
 class LsRankFile
   attr_accessor :comment
   attr_accessor :filename
+  attr_accessor :pics
   attr_accessor :rank
   
   def initialize(filename)
     @comment = ''
     @filename = filename
+    @pics = nil
     @rank = nil
   end
   
