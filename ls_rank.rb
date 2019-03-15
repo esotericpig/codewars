@@ -18,7 +18,7 @@ end
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = '1.2.0'
+  VERSION = '1.2.1'
   
   BEGIN_TAGS = ['###','/**','"""']
   END_TAGS = ['###',' */','"""']
@@ -103,11 +103,11 @@ class LsRank
       
       next if file.rank.nil?()
       
-      basename = File.basename(filename,'.*')
-      dirname = File.dirname(filename)
+      lang = File.dirname(filename)
+      name = File.basename(filename,'.*')
       
-      if !(pics = @pics[dirname][basename]).nil?()
-        file.pics = "[ #{pics.join(' | ')} ]"
+      if !(pics_md = @pics[lang][name]).nil?()
+        file.pics = "[ #{pics_md.join(' | ')} ]"
       end
       
       if @opts[:rank].nil?() && !@opts[:markdown]
@@ -140,7 +140,8 @@ class LsRank
       files.each_with_index() do |file,j|
         if @opts[:markdown]
           print "    - [#{file.filename}](#{file.filename})"
-          puts (file.pics.nil?() ? '' : " #{file.pics}")
+          print " #{file.pics}" unless file.pics.nil?()
+          puts
         else
           puts file.filename
           
@@ -162,6 +163,7 @@ class LsRank
     @pics = Hash.new{|h,k| h[k] = {}}
     
     Dir.glob(File.join(PICS_DIR,'*.*')) do |filename|
+      # python_hard_sudoku_solver => python, hard_sudoku_solver
       basename = File.basename(filename)
       basename = basename.split('_',2)
       
@@ -170,15 +172,16 @@ class LsRank
       lang = basename[0]
       name = basename[1]
       ext = File.extname(name).strip
-      ext = ext[1..-1] if ext.length > 0
+      ext = ext[1..-1] if ext.length > 0 # Remove dot
       name = File.basename(name,'.*')
       
       # For future extensions, do: (gif|png|...)
       next unless ext =~ /(gif)/i
       
-      md = @pics[lang][name]
-      @pics[lang][name] = (md = []) if md.nil?()
-      md.push("[#{ext}](#{filename})")
+      # Array of markdown
+      pics_md = @pics[lang][name]
+      @pics[lang][name] = (pics_md = []) if pics_md.nil?()
+      pics_md.push("[#{ext}](#{filename})")
     end
   end
   
