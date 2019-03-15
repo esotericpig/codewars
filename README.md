@@ -137,7 +137,7 @@ The language version is usually just behind the latest version.
 I did not add the license to the top of each file, like I usually do (and is the recommended practice), because I wanted the files to be small and quickly viewable (like scripts). However, every file in this repo is under this license, so do not be afraid to use any of the code here in a project that is compatible with this license.
 
 > codewars (https://github.com/esotericpig/codewars)  
-> Copyright (c) 2018 Jonathan Bradley Whited (@esotericpig)  
+> Copyright (c) 2018-2019 Jonathan Bradley Whited (@esotericpig)  
 > 
 > codewars is free software: you can redistribute it and/or modify  
 > it under the terms of the GNU General Public License as published by  
