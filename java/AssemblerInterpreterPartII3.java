@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -51,7 +52,7 @@ public class AssemblerInterpreterPartII3 {
     // null
     // "2^10 = 1024"
     
-    Charset charset = Charset.forName("UTF-8");
+    Charset charset = StandardCharsets.UTF_8; // Charset.forName("UTF-8");
     String dirname = "data";
     String filename = "asm_interp_partii.asm"; // Party?
     Path[] paths = new Path[]{Paths.get("..",dirname,filename),Paths.get(dirname,filename)};
