@@ -257,7 +257,7 @@ class Glader {
   
   // Use this to watch a Glader run for fun
   public void printPath(Maze maze) {
-    maze = maze.clone();
+    maze = new Maze(maze);
     int x = this.x,y = this.y;
     Scanner stdin = new Scanner(System.in);
     
@@ -286,7 +286,7 @@ class Glader {
   }
 }
 
-class Maze implements Cloneable {
+class Maze {
   public static final char GOAL = '$';
   public static final char GLADER = '@';
   public static final char EMPTY = ' ';
@@ -329,8 +329,6 @@ class Maze implements Cloneable {
       maze[0][y] = WALL; maze[maze.length - 1][y] = WALL;
     }
   }
-  
-  public Maze clone() { return new Maze(this); }
   
   public void setEmpty(int x,int y) { setSpace(x,y,EMPTY); }
   public void setOg(int x,int y) { setSpace(x,y,OG); }
