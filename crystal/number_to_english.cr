@@ -62,24 +62,24 @@ BIG_ENG_NUMS = {
   1 => "thousand",2 => "million",3 => "billion",4 => "trillion"
 }
 
-puts MAX_ENG_NUM
-
 if ARGV.empty?
-  puts "'#{number_to_english(0)}'"      # "zero"
-  puts "'#{number_to_english(7)}'"      # "seven"
-  puts "'#{number_to_english(11)}'"     # "eleven"
-  puts "'#{number_to_english(20)}'"     # "twenty"
-  puts "'#{number_to_english(47)}'"     # "forty seven"
-  puts "'#{number_to_english(100)}'"    # "one hundred"
-  puts "'#{number_to_english(305)}'"    # "three hundred five"
-  puts "'#{number_to_english(4_002)}'"  # "four thousand two"
-  puts "'#{number_to_english(3_892)}'"  # "three thousand eight hundred ninety two"
-  puts "'#{number_to_english(6_800)}'"  # "six thousand eight hundred"
+  puts "'#{number_to_english(0     )}'" # "zero"
+  puts "'#{number_to_english(7     )}'" # "seven"
+  puts "'#{number_to_english(11    )}'" # "eleven"
+  puts "'#{number_to_english(20    )}'" # "twenty"
+  puts "'#{number_to_english(47    )}'" # "forty seven"
+  puts "'#{number_to_english(100   )}'" # "one hundred"
+  puts "'#{number_to_english(305   )}'" # "three hundred five"
+  puts "'#{number_to_english(4_002 )}'" # "four thousand two"
+  puts "'#{number_to_english(3_892 )}'" # "three thousand eight hundred ninety two"
+  puts "'#{number_to_english(6_800 )}'" # "six thousand eight hundred"
   puts "'#{number_to_english(14_111)}'" # "fourteen thousand one hundred eleven"
   puts "'#{number_to_english(20_005)}'" # "twenty thousand five"
   puts "'#{number_to_english(99_999)}'" # "ninety nine thousand nine hundred ninety nine"
-  puts "'#{number_to_english(95.99)}'"  # ""
-  puts "'#{number_to_english(-4)}'"     # ""
+  puts "'#{number_to_english(95.99 )}'" # ""
+  puts "'#{number_to_english(-4    )}'" # ""
+  
+  puts "'#{number_to_english(MAX_ENG_NUM)}'"
 else
   ARGV.each do |arg|
     puts "'#{number_to_english(arg.gsub(/[^\d\.\-]+/,"").to_i)}'"
