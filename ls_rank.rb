@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
+# encoding: UTF-8
+# frozen_string_literal: true
 
 require 'optparse'
 
-LS_RANK_RUBY_VERSION = 2.4
+LS_RANK_RUBY_VERSION = '2.4'
 
-if defined?(RUBY_VERSION) && RUBY_VERSION.is_a?(String) &&
-    RUBY_VERSION.gsub(/[^\d\.]+/,'').to_f() < LS_RANK_RUBY_VERSION
+if defined?(RUBY_VERSION) && RUBY_VERSION < LS_RANK_RUBY_VERSION
   puts "WARN: Ruby v#{RUBY_VERSION} is less than the recommended version of #{LS_RANK_RUBY_VERSION}."
   puts
 end
@@ -18,12 +19,13 @@ end
 # @author Jonathan Bradley Whited (@esotericpig)
 ###
 class LsRank
-  VERSION = '1.2.1'
+  VERSION = '1.2.2'
   
   BEGIN_TAGS = ['###','/**','"""']
   END_TAGS = ['###',' */','"""']
   PICS_DIR = 'pics'
-  RANK_TAGS = ['@rank','rank:']
+  RANK_TAGS = ['@rank','rank:','RANK:']
+  SEE_TAGS = ['@see','see:','SEE:']
   
   attr_reader :args
   attr_reader :opts
@@ -208,7 +210,7 @@ class LsRankFile
   attr_accessor :rank
   
   def initialize(filename)
-    @comment = ''
+    @comment = ''.dup()
     @filename = filename
     @pics = nil
     @rank = nil
