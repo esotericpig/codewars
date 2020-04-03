@@ -1,8 +1,7 @@
 # codewars
-[esotericpig | codewars](https://www.codewars.com/users/esotericpig)  
-![Large codewars badge](https://www.codewars.com/users/esotericpig/badges/large)  
+[![Codewars Badge | esotericpig](https://www.codewars.com/users/esotericpig/badges/large)](https://www.codewars.com/users/esotericpig)
 
-This repo contains my solutions from [codewars](https://www.codewars.com).
+This repo contains my solutions from [codewars](https://www.codewars.com/users/esotericpig).
 
 Not all of my solutions are listed. A solution will be listed if it is...
 
