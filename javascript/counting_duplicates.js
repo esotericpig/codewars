@@ -1,14 +1,14 @@
 /**
- * @author Jonathan Bradley Whited (@esotericpig)
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/counting-duplicates/javascript
  * @rank   6 kyu
  */
 function duplicateCount(text) {
   var dups = {}; // Duplicates
-  
+
   return text.split('').map(c => {
     c = c.toLowerCase();
-    
+
     if(c in dups) {
       if(dups[c]) {
         dups[c] = false;
@@ -31,7 +31,7 @@ console.log(duplicateCount("Indivisibilities")); // 2 (characters may not be adj
 
 if(process.argv.length > 2) {
   console.log();
-  
+
   for(var i = 2; i < process.argv.length; ++i) {
     var text = process.argv[i];
     console.log(text + ' => ' + duplicateCount(text));

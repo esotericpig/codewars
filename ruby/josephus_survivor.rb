@@ -1,25 +1,25 @@
 #!/usr/bin/env ruby
 
 ###
-# @author Jonathan Bradley Whited (@esotericpig)
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/josephus-survivor/ruby
 # @rank   5 kyu
 ###
 
 # Iterative (non-recursive) solution
-# 
+#
 # @param [Integer] n number of people
 # @param [Integer] k steps after to then kill
 def josephus_survivor(n,k)
   survivors = (1..n).to_a
-  
+
   i = 0
   k -= 1
-  
+
   while survivors.length > 1
     survivors.delete_at(i = (i + k) % survivors.length)
   end
-  
+
   survivors[0]
 end
 
@@ -41,7 +41,7 @@ puts josephus_survivor_rec(100,1) # 100
 
 if ARGV.length >= 2
   n,k = ARGV[0].to_i,ARGV[1].to_i
-  
+
   puts
   puts "(n=#{n},k=#{k}) => i:#{josephus_survivor(n,k)},r:#{josephus_survivor_rec(n,k)}"
 end

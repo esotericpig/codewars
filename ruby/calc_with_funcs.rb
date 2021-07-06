@@ -2,8 +2,8 @@
 
 ###
 # In Ruby, this was super easy.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/calculating-with-functions/ruby
 # @rank   5 kyu
 ###

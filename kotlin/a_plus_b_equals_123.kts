@@ -1,7 +1,7 @@
 /**
  * Seemed easy, but B can't be negative.
- * 
- * @author Jonathan Bradley Whited (@esotericpig)
+ *
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/a-plus-b-equals-equals-123/kotlin
  * @rank   6 kyu
  */
@@ -28,12 +28,12 @@ println(Dinglemouse2.int123(500)) // 9223372036854775431
 
 if(args.any()) {
   println()
-  
+
   for(arg in args) {
     var a:Int = arg.toInt()
     var b1:Long = Dinglemouse.int123(a)
     var b2:Long = Dinglemouse2.int123(a)
-    
+
     println("1: ($a + $b1).toInt() => ${(a + b1).toInt()}")
     println("2: ($a + $b2).toInt() => ${(a + b2).toInt()}")
   }

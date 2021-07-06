@@ -6,13 +6,13 @@ require 'open-uri'
 ###
 # For this solution, I decided to have fun and use Google in order to be hackier
 #   and also have the smallest code size lol.
-# 
+#
 # It is super slow, but passed.
-# 
+#
 # Originally, I used nokogiri because I expected to use its functionality, but
 #   then all I ended up doing was parsing the content as a String out of laziness.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/roman-numerals-helper/ruby
 # @rank   4 kyu
 ###
@@ -22,11 +22,11 @@ class RomanNumerals
     doc = open("https://www.google.com/search?q=#{value}+#{query}").read
     doc.slice(doc.index("#{value} = "),100).gsub(/\A.*=[[:space:]]+/,'').gsub(/\<.*\z/,'')
   end
-  
+
   def self.to_roman(num)
     google(num,'to+roman+numerals')
   end
-  
+
   def self.from_roman(roman)
     google(roman,'to+arabic').to_i
   end

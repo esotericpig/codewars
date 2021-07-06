@@ -21,13 +21,13 @@ import java.util.regex.Pattern;
 /**
  * <pre>
  * This solution is a multi-pass assembler.
- * 
+ *
  * This is my verbose solution, which is faster because of less switches.
  * I didn't submit this solution because it's too verbose for codewars.
  * Instead, I submitted AssemblerInterpreterPartII.java.
  * </pre>
- * 
- * @author Jonathan Bradley Whited (@esotericpig)
+ *
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/assembler-interpreter-part-ii/java
  * @see    https://en.wikipedia.org/wiki/Assembly_language
  * @see    https://en.wikipedia.org/wiki/Assembly_language#Number_of_passes
@@ -43,7 +43,7 @@ public class AssemblerInterpreterPartII2 {
   protected StringBuilder out = new StringBuilder();
   protected int prevCmp = 0;
   protected Map<String,Integer> regs = new HashMap<>();
-  
+
   public static void main(String[] args) {
     // "(5+1)/2 = 3"
     // "5! = 120"
@@ -52,18 +52,18 @@ public class AssemblerInterpreterPartII2 {
     // "gcd(81, 153) = 9"
     // null
     // "2^10 = 1024"
-    
+
     Charset charset = StandardCharsets.UTF_8; // Charset.forName("UTF-8");
     String dirname = "data";
     String filename = "asm_interp_partii.asm"; // Party?
     Path[] paths = new Path[]{Paths.get("..",dirname,filename),Paths.get(dirname,filename)};
-    
+
     for(Path path: paths) {
       if(Files.exists(path)) {
         try(BufferedReader fin = Files.newBufferedReader(path,charset)) {
           String line = null;
           StringBuilder prog = new StringBuilder();
-          
+
           while((line = fin.readLine()) != null) {
             if(line.equals("---")) {
               System.out.println(interpret(prog.toString()));
@@ -73,7 +73,7 @@ public class AssemblerInterpreterPartII2 {
               prog.append(line).append('\n');
             }
           }
-          
+
           if(prog.length() > 0) {
             System.out.println(interpret(prog.toString()));
           }
@@ -85,62 +85,62 @@ public class AssemblerInterpreterPartII2 {
       }
     }
   }
-  
+
   public static String interpret(final String input) {
     return (new AssemblerInterpreterPartII2(input)).run();
   }
-  
+
   public AssemblerInterpreterPartII2(final String input) {
     String[] lines = input.split("\n+");
-    
+
     insts = new ArrayList<>(lines.length);
-    
+
     for(String line: lines) {
       Inst inst = newInst(line);
       if(inst != null) { insts.add(inst); }
     }
   }
-  
+
   public String run() {
     for(currInstIndex = 0; currInstIndex < insts.size(); ++currInstIndex) {
       Inst inst = insts.get(currInstIndex);
       inst.exec();
-      
+
       if(hasEnd) { break; }
       if(gotoIndex != -1) {
         currInstIndex = gotoIndex;
         gotoIndex = -1;
       }
     }
-    
+
     return hasEnd ? out.toString() : null;
   }
-  
+
   public Inst newInst(String line) {
     Inst inst = null;
-    
+
     // Blank line or comment?
     if((line = line.trim()).isEmpty() || line.charAt(0) == ';') {
       return inst;
     }
-    
+
     // <instruction> | <single quoted string> | <comma> | <comment>
     Matcher matcher = Pattern.compile("[^\\s',;]+|'[^']*'|,|;.*").matcher(line);
     List<String> args = new ArrayList<String>(2); // Usually 2
-    
+
     while(matcher.find()) {
       String group = matcher.group();
       char firstChar = group.charAt(0);
-      
+
       if(firstChar == ';') { break; }    // Comment?
       if(firstChar == ',') { continue; } // Ignore commas
-      
+
       args.add(group);
     }
-    
+
     if(!args.isEmpty()) {
       String instName = args.get(0);
-      
+
       if(args.size() == 1 && instName.charAt(instName.length() - 1) == ':') {
         inst = new FuncInst();
       }
@@ -167,40 +167,40 @@ public class AssemblerInterpreterPartII2 {
           case "sub":  inst = new SubInst();  break;
         }
       }
-      
+
       if(inst != null) {
         inst.args = args;
         inst.index = currInstIndex++;
-        
+
         inst.init();
       }
       else {
         throw new RuntimeException("Invalid instruction: " + instName);
       }
     }
-    
+
     return inst;
   }
-  
+
   public abstract class Inst {
     protected List<String> args;
     protected int index;
-    
+
     public abstract void exec();
-    
+
     public void init() {
       args.remove(0); // Remove instruction name
     }
   }
-  
+
   public abstract class NumInst extends Inst {
     protected int[] nums;
     protected String[] vars;
-    
+
     public void exec() {
       for(int i = 0; i < args.size(); ++i) {
         String arg = args.get(i);
-        
+
         if(arg.matches("\\d+")) {
           nums[i] = Integer.parseInt(arg);
         }
@@ -210,98 +210,98 @@ public class AssemblerInterpreterPartII2 {
         }
       }
     }
-    
+
     public void init() {
       super.init();
       nums = new int[args.size()];
       vars = new String[args.size()];
     }
-    
+
     public void setVar(int index,int num) {
       regs.put(vars[index],nums[index] = num);
     }
   }
-  
+
   public class AddInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,nums[0] + nums[1]);
     }
   }
-  
+
   public class CallInst extends JmpInst {
     public void exec() {
       super.exec();
       if(isJmp()) { gotoIndexStack.push(currInstIndex); }
     }
   }
-  
+
   public class CmpInst extends NumInst {
     public void exec() {
       super.exec();
       prevCmp = nums[0] - nums[1];
     }
   }
-  
+
   public class DecInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,--nums[0]);
     }
   }
-  
+
   public class DivInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,nums[0] / nums[1]);
     }
   }
-  
+
   public class EndInst extends Inst {
     public void exec() {
       hasEnd = true;
     }
   }
-  
+
   public class FuncInst extends Inst {
     public void init() {
       String name = args.get(0);
       name = name.substring(0,name.length() - 1);
-      
+
       args.set(0,name);
       funcs.put(name,this);
     }
-    
+
     public void exec() {}
   }
-  
+
   public class IncInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,++nums[0]);
     }
   }
-  
+
   public class JeInst extends JmpInst {
     public boolean isJmp() { return prevCmp == 0; }
   }
-  
+
   public class JgInst extends JmpInst {
     public boolean isJmp() { return prevCmp > 0; }
   }
-  
+
   public class JgeInst extends JmpInst {
     public boolean isJmp() { return prevCmp >= 0; }
   }
-  
+
   public class JlInst extends JmpInst {
     public boolean isJmp() { return prevCmp < 0; }
   }
-  
+
   public class JleInst extends JmpInst {
     public boolean isJmp() { return prevCmp <= 0; }
   }
-  
+
   public class JmpInst extends Inst {
     public void exec() {
       if(isJmp()) {
@@ -309,21 +309,21 @@ public class AssemblerInterpreterPartII2 {
         gotoIndex = funcInst.index;
       }
     }
-    
+
     public boolean isJmp() { return true; }
   }
-  
+
   public class JneInst extends JmpInst {
     public boolean isJmp() { return prevCmp != 0; }
   }
-  
+
   public class MovInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,nums[1]);
     }
   }
-  
+
   public class MsgInst extends Inst {
     public void exec() {
       for(String arg: args) {
@@ -331,14 +331,14 @@ public class AssemblerInterpreterPartII2 {
       }
     }
   }
-  
+
   public class MulInst extends NumInst {
     public void exec() {
       super.exec();
       setVar(0,nums[0] * nums[1]);
     }
   }
-  
+
   public class RetInst extends Inst {
     public void exec() {
       if(!gotoIndexStack.isEmpty()) {
@@ -346,7 +346,7 @@ public class AssemblerInterpreterPartII2 {
       }
     }
   }
-  
+
   public class SubInst extends NumInst {
     public void exec() {
       super.exec();

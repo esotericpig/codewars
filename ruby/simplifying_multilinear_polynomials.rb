@@ -3,8 +3,8 @@
 ###
 # This is actually the reverse of standard form, but Katas do this sometimes to
 #   help prevent against using pre-built libraries.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/simplifying-multilinear-polynomials/ruby
 # @see    https://en.wikipedia.org/wiki/Multilinear_polynomial
 # @see    https://www.mathsisfun.com/algebra/polynomials.html
@@ -12,11 +12,11 @@
 ###
 def simplify(poly)
   terms = {}
-  
+
   # [(-/+)num, letters]
   poly.scan(/([\-\+]?\d*)([[:alpha:]]+)/) do |t|
     term = Term.new(t)
-    
+
     if terms.key?(term.var)
       terms[term.var].coeff += term.coeff
       terms.delete(term.var) if terms[term.var].coeff == 0
@@ -24,10 +24,10 @@ def simplify(poly)
       terms[term.var] = term
     end
   end
-  
+
   # There is probably a better way than using first...
   first,result = true,''
-  
+
   terms.values.sort.each do |t|
     result << t.to_s(first)
     first = false
@@ -37,19 +37,19 @@ end
 
 class Term
   attr_accessor :coeff,:var
-  
+
   def initialize(t)
     @coeff = (t[0].empty? || t[0] == '+') ? 1 : (t[0] == '-') ? -1 : t[0].to_i
     @var = t[1].chars.sort.join
   end
-  
+
   def <=>(other)
     result = 0
     return result if (result = (@var.length <=> other.var.length)) != 0
     return result if (result = (@var <=> other.var)) != 0
     (@coeff <=> other.coeff)
   end
-  
+
   def to_s(first=false)
     s = (@coeff == -1) ? '-' : (!first && @coeff >= 0) ? '+' : ''
     s << @coeff.to_s if @coeff.abs != 1

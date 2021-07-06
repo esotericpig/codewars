@@ -12,7 +12,7 @@ If there was only 1 number left, I had found the value for that position.
 
 A group is basically a Moore neighborhood (3x3), but only 9 groups.
 
-author: Jonathan Bradley Whited (@esotericpig)
+author: Jonathan Bradley Whited
 see:    https://www.codewars.com/kata/sudoku-solver/python
 see:    https://en.wikipedia.org/wiki/Sudoku
 see:    https://en.wikipedia.org/wiki/Moore_neighborhood
@@ -31,7 +31,7 @@ def solve(puzzle):
     for y in range(0,9):
       col.add(puzzle[y][x])
     cols.append(col)
-  
+
   groups = []
   for group_y in range(0,9,3):
     for group_x in range(0,9,3):
@@ -40,27 +40,27 @@ def solve(puzzle):
         for x in range(group_x,group_x + 3):
           group.add(puzzle[y][x])
       groups.append(group)
-  
+
   solved_all = True
   for y in range(0,9):
     for x in range(0,9):
       if puzzle[y][x] != 0: continue
-      
+
       nums = set(range(1,10))
       nums -= cols[x]
       nums -= set(puzzle[y]) # rows
       nums -= groups[x // 3 + (y // 3 * 3)]
-      
+
       if len(nums) == 1:
         puzzle[y][x] = nums.pop()
       else:
         solved_all = False
-  
+
   return solved_all
 
 def print_2da(title,a):
   print(title)
-  
+
   for row in a:
     print(end='  ')
     for col in row:
@@ -98,13 +98,13 @@ if len(sys.argv) > 1:
   for i in range(1,len(sys.argv)):
     print()
     arg = sys.argv[i]
-    
+
     if len(arg) != 81:
       print('Skipping arg[{}]: len of {} != 81'.format(i,len(arg)))
       continue
-    
+
     puzzle = np.reshape(list(map(int,arg)),(9,9)).tolist()
     result = sudoku(deepcopy(puzzle))
-    
+
     print_2da('Puzzle from arg[{}]:'.format(i),puzzle)
     print_2da('Result from arg[{}]:'.format(i),result)

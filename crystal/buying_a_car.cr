@@ -1,8 +1,8 @@
 ###
 # This one seems pretty useful if you need to save up to buy a new car
 #   (or anything).
-# 
-# AUTHOR: Jonathan Bradley Whited (@esotericpig)
+#
+# AUTHOR: Jonathan Bradley Whited
 # SEE:    https://www.codewars.com/kata/buying-a-car/crystal
 # RANK:   6 kyu
 ###
@@ -12,18 +12,18 @@ LOSS_INCREASE = 0.5 / 100.0 # Percent
 def nb_months(priceOld,priceNew,saving,loss)
   loss /= 100.0 # Percent
   money,months = 0,0
-  
+
   loop do
     money = priceOld + (saving * months)
-    
+
     break if money >= priceNew
-    
+
     loss = (loss + LOSS_INCREASE).round(4) if (months += 1).even?
-    
+
     priceOld -= (priceOld * loss)
     priceNew -= (priceNew * loss)
   end
-  
+
   [months,(money - priceNew).round.to_i]
 end
 

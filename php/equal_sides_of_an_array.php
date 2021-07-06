@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @author Jonathan Bradley Whited (@esotericpig)
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/equal-sides-of-an-array/php
  * @rank   6 kyu
  */
@@ -11,19 +11,19 @@ function find_even_index($arr){
   $left_sum = 0;
   $right_sum = array_sum($arr);
   $result = -1;
-  
+
   // $i is index
   foreach($arr as $i=>$value) {
     $right_sum -= $value;
-    
+
     if($left_sum == $right_sum) {
       $result = $i;
       break;
     }
-    
+
     $left_sum += $value;
   }
-  
+
   return $result;
 }
 

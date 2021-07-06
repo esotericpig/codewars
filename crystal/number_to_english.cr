@@ -1,9 +1,9 @@
 ###
 # I expanded my original solution to include numbers over 99,999.
-# 
+#
 # For a library, it would need UInt64/BigInt/String overloads.
-# 
-# AUTHOR: Jonathan Bradley Whited (@esotericpig)
+#
+# AUTHOR: Jonathan Bradley Whited
 # SEE:    https://www.codewars.com/kata/ninety-nine-thousand-nine-hundred-ninety-nine/crystal
 # RANK:   5 kyu
 ###
@@ -11,25 +11,25 @@
 def number_to_english(n)
   return "" if !n.is_a?(Int) || n < 0 || n > MAX_ENG_NUM
   return ENG_NUMS[n][0] if n < 10
-  
+
   number_to_english(n.to_i,1,1).reverse.join(' ')
 end
 
 # In newer versions of Crystal, can do `(n // 10)` instead of `(n / 10).to_i`.
 def number_to_english(n : Int,small_place : Int,big_place : Int) : Array(String)
   eng_num = [] of String
-  
+
   return eng_num if n <= 0
-  
+
   digit = n % 10
-  
+
   case small_place
   when 1
     next_digit = (n / 10).to_i % 10
-    
+
     if next_digit == 1
       eng_num << ENG_NUMS[digit][1]
-      
+
       n = (n / 10).to_i
       small_place *= 10
     elsif digit != 0
@@ -41,10 +41,10 @@ def number_to_english(n : Int,small_place : Int,big_place : Int) : Array(String)
     eng_num << "hundred" << ENG_NUMS[digit][0] if digit != 0
   when 1000
     eng_num << BIG_ENG_NUMS[big_place]
-    
+
     return eng_num.concat(number_to_english(n,1,big_place + 1))
   end
-  
+
   eng_num.concat(number_to_english((n / 10).to_i,small_place * 10,big_place))
 end
 
@@ -78,7 +78,7 @@ if ARGV.empty?
   puts "'#{number_to_english(99_999)}'" # "ninety nine thousand nine hundred ninety nine"
   puts "'#{number_to_english(95.99 )}'" # ""
   puts "'#{number_to_english(-4    )}'" # ""
-  
+
   puts "'#{number_to_english(MAX_ENG_NUM)}'"
 else
   ARGV.each do |arg|

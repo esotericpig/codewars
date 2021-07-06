@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
  * This was the smallest solution I saw. You can probably reduce the # of lines
  *   even more, but I'm not sure how right now.
  * </pre>
- * 
- * @author Jonathan Bradley Whited (@esotericpig)
+ *
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/assembler-interpreter-part-ii/java
  * @see    https://en.wikipedia.org/wiki/Assembly_language
  * @see    https://en.wikipedia.org/wiki/Assembly_language#Number_of_passes
@@ -40,9 +40,9 @@ public class AssemblerInterpreterPartII3 {
   private List<Inst>          insts     = new ArrayList<>();
   private StringBuilder       out       = new StringBuilder();
   private Map<String,Integer> regs      = new HashMap<>();
-  
+
   private int cmp = 0,index = 0;
-  
+
   public static void main(String[] args) {
     // "(5+1)/2 = 3"
     // "5! = 120"
@@ -51,18 +51,18 @@ public class AssemblerInterpreterPartII3 {
     // "gcd(81, 153) = 9"
     // null
     // "2^10 = 1024"
-    
+
     Charset charset = StandardCharsets.UTF_8; // Charset.forName("UTF-8");
     String dirname = "data";
     String filename = "asm_interp_partii.asm"; // Party?
     Path[] paths = new Path[]{Paths.get("..",dirname,filename),Paths.get(dirname,filename)};
-    
+
     for(Path path: paths) {
       if(Files.exists(path)) {
         try(BufferedReader fin = Files.newBufferedReader(path,charset)) {
           String line = null;
           StringBuilder prog = new StringBuilder();
-          
+
           while((line = fin.readLine()) != null) {
             if(line.equals("---")) {
               System.out.println(interpret(prog.toString()));
@@ -72,7 +72,7 @@ public class AssemblerInterpreterPartII3 {
               prog.append(line).append('\n');
             }
           }
-          
+
           if(prog.length() > 0) {
             System.out.println(interpret(prog.toString()));
           }
@@ -84,33 +84,33 @@ public class AssemblerInterpreterPartII3 {
       }
     }
   }
-  
+
   public static String interpret(final String input) {
     return (new AssemblerInterpreterPartII3(input)).run();
   }
-  
+
   public AssemblerInterpreterPartII3(final String input) {
     for(String line: input.split("\n+")) {
       // Empty or comment?
       if((line = line.trim()).isEmpty() || line.charAt(0) == ';') {
         continue;
       }
-      
+
       // <instruction> | <single quoted string> | <comma> | <comment>
       Matcher matcher = Pattern.compile("[^\\s',;]+|'[^']*'|,|;.*").matcher(line);
       List<String> instArgs = new ArrayList<String>(2); // Usually 2
-      
+
       while(matcher.find()) {
         String group = matcher.group();
         char firstChar = group.charAt(0);
-        
+
         if(firstChar == ';') { break; }    // Comment?
         if(firstChar == ',') { continue; } // Ignore commas
         instArgs.add(group);
       }
-      
+
       Inst inst = new Inst(instArgs);
-      
+
       // Function/Label?
       if(inst.args.length == 0 && inst.name.charAt(inst.name.length() - 1) == ':') {
         inst.func = (args) -> -1; // no op
@@ -140,7 +140,7 @@ public class AssemblerInterpreterPartII3 {
           case "sub":  inst.func = (args) -> setVar(args[0],getVar(args[0]) - getNumOrVar(args[1])); break;
         }
       }
-      
+
       if(inst.func != null) {
         insts.add(inst);
         ++index;
@@ -150,25 +150,25 @@ public class AssemblerInterpreterPartII3 {
       }
     }
   }
-  
+
   public String run() {
     boolean hasEnd = false;
-    
+
     for(index = 0; index < insts.size(); ++index) {
       Inst inst = insts.get(index);
       int gotoIndex = inst.exec();
-      
+
       if(gotoIndex == -2) { hasEnd = true; break; }
       if(gotoIndex != -1) { index = gotoIndex; }
     }
-    
+
     return hasEnd ? out.toString() : null;
   }
-  
+
   public int jmp(String funcName,boolean isJmp) {
     return jmp(funcName,isJmp,false);
   }
-  
+
   public int jmp(String funcName,boolean isJmp,boolean isCall) {
     if(isJmp) {
       if(isCall) { gotoStack.push(index); }
@@ -176,39 +176,39 @@ public class AssemblerInterpreterPartII3 {
     }
     return -1;
   }
-  
+
   public int msg(String[] args) {
     for(String arg: args) {
       out.append(arg.charAt(0) == '\'' ? arg.substring(1,arg.length() - 1) : regs.get(arg));
     }
     return -1;
   }
-  
+
   public int setVar(String var,Integer num) {
     regs.put(var,num);
     return -1;
   }
-  
+
   public int getNumOrVar(String arg) {
     return arg.matches("\\d+") ? Integer.parseInt(arg) : regs.get(arg);
   }
-  
+
   public int getVar(String var) {
     return regs.get(var);
   }
-  
+
   public static class Inst {
     public String[] args = null;
     public Func     func = null;
     public String   name = null;
-    
+
     public Inst(List<String> args) {
       this.name = args.remove(0);
       this.args = args.toArray(new String[0]);
     }
-    
+
     public int exec() { return func.applyAsInt(args); }
-    
+
     public static interface Func extends ToIntFunction<String[]> {}
   }
 }

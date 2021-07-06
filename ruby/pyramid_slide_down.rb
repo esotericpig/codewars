@@ -2,26 +2,26 @@
 
 ###
 # I love pyramids.
-# 
+#
 # For this solution, I started at the bottom, compared pairs for the max, and
 #   then continued to move up the pyramid.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###
 def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[0])
   return bottom[0] + pyramid[0][0] if y == 0
-  
+
   row_len = pyramid[y].length
   bottom *= row_len if bottom.length == 1
   bottom.map!.with_index{|cost,x| cost + pyramid[y][x]}
   row = []
-  
+
   for x in 0..row_len - 2
     row.push(bottom[x..x + 1].max)
   end
-  
+
   longest_slide_down(pyramid,y - 1,row)
 end
 

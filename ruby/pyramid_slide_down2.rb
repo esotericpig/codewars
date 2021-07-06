@@ -3,15 +3,15 @@
 ###
 # For fun, I made this solution that shows the pyramid and the longest slide
 #   down.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###
 def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[Slide.new])
   if y == 0
     bottom[0].cost += pyramid[0][0]
-    
+
     # Show the pyramid and the longest slide down as dots
     child = Slide.new(0,bottom[0],0,0)
     until (child = child.child).nil?
@@ -20,37 +20,37 @@ def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[Slide.new])
       puts
     end
     puts "Longest slide down: #{bottom[0].cost}"
-    
+
     return bottom[0].cost
   end
-  
+
   row_len = pyramid[y].length
-  
+
   # Can't use *= because we need new objects (not all the same reference)
   bottom = Array.new(row_len){|x| Slide.new(0,nil,x,y)} if bottom.length == 1
   bottom.map!.with_index{|slide,x| slide.cost += pyramid[y][x]; slide}
-  
+
   row = []
   y -= 1
-  
+
   for x in 0..row_len - 2
     child = bottom[x..x + 1].max
     row.push(Slide.new(child.cost,child,x,y))
   end
-  
+
   longest_slide_down(pyramid,y,row)
 end
 
 class Slide
   attr_accessor :child,:cost,:x,:y
-  
+
   def initialize(cost=0,child=nil,x=0,y=0)
     @child = child
     @cost = cost
     @x = x
     @y = y
   end
-  
+
   # Needed for [].max()
   def <=>(other)
     @cost <=> other.cost

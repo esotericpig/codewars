@@ -3,14 +3,14 @@
 ###
 # The best solution was only 2 lines and used reduce()!
 # The basic idea was the same as my code, using product().
-# 
+#
 # The adjacent digits (neighbors) are basically a von Neumann neighborhood,
 #   including self.
-# 
+#
 # I could have sworn I did a similar thing to this in college, related to Gray
 #   codes or something else, but I couldn't find the project and/or remember.
-# 
-# @author Jonathan Bradley Whited (@esotericpig)
+#
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/the-observed-pin/ruby
 # @see    https://en.wikipedia.org/wiki/Von_Neumann_neighborhood
 # @see    https://en.wikipedia.org/wiki/Gray_code
@@ -33,18 +33,18 @@ DIGITS.transform_values!{|v| v.map(&:to_s)} # Ruby v2.4+
 
 def get_pins(observed)
   result = []
-  
+
   DIGITS[observed[0]].each do |digit|
     pins = [[digit]] # Double array for length of 1
-    
+
     for i in 1...observed.length
       pins = pins.product(DIGITS[observed[i]])
     end
-    
+
     pins.map!{|pin| pin.flatten.join}
     result.push(pins)
   end
-  
+
   result.flatten!
   result
 end

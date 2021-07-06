@@ -4,12 +4,12 @@ import java.util.TreeSet;
 /**
  * <pre>
  * I liked my solution using TreeSet, which none of the other solutions did.
- * 
+ *
  * I could have also used a PriorityQueue (i.e., a sorted linked list) or just
  *   Arrays#sort(...)/Collections#sort(...).
  * </pre>
- * 
- * @author Jonathan Bradley Whited (@esotericpig)
+ *
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/length-of-missing-array/java
  * @rank   6 kyu
  */
@@ -31,19 +31,19 @@ public class LengthOfMissingArray {
     // 0
     System.out.println(getLengthOfMissingArray(new Object[][]{}));
   }
-  
+
   public static int getLengthOfMissingArray(Object[][] aoa) {
     if(aoa == null || aoa.length == 0) { return 0; }
     TreeSet<Integer> tree = new TreeSet<>();
-    
+
     for(Object[] a: aoa) {
       if(a == null || a.length == 0) { return 0; }
       tree.add(a.length);
     }
-    
+
     Iterator<Integer> it = tree.iterator();
     int nextSeq = it.next() + 1;
-    
+
     while(it.hasNext()) {
       int seq = it.next();
       if(seq != nextSeq) { return nextSeq; }

@@ -1,5 +1,5 @@
 ###
-# @author Jonathan Bradley Whited (@esotericpig)
+# @author Jonathan Bradley Whited
 # @see    https://www.codewars.com/kata/breaking-chocolate-problem/coffeescript
 # @rank   7 kyu
 ###

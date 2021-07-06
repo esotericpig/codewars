@@ -5,14 +5,14 @@ import sys
 """
 My solution was not the sexiest, but I just liked this Kata.
 
-author: Jonathan Bradley Whited (@esotericpig)
+author: Jonathan Bradley Whited
 see:    https://www.codewars.com/kata/who-likes-it/python
 rank:   6 kyu
 """
 
 def likes(names):
     names_len = len(names)
-    
+
     if names_len == 0:
         result = 'no one likes this'
     elif names_len == 1:
@@ -21,14 +21,14 @@ def likes(names):
         result = '{} and {} like this'.format(names[0],names[1])
     else:
         result = '{}, {} and '.format(names[0],names[1])
-        
+
         if names_len == 3:
             result += '{}'.format(names[2])
         else:
             result += '{} others'.format(names_len - 2)
-        
+
         result += ' like this'
-    
+
     return result
 
 print(likes([]))                            # 'no one likes this'

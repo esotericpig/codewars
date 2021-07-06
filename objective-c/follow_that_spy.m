@@ -1,31 +1,31 @@
 #import <Foundation/Foundation.h>
 
 /**
- * @author Jonathan Bradley Whited (@esotericpig)
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/follow-that-spy/objc
  * @rank   6 kyu
  */
 NSString* findRoutes(NSArray* routes) {
   NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-  
+
   for(id route in routes) {
     dict[route[0]] = route[1];
   }
-  
+
   NSMutableArray* realRoutes = [[NSMutableArray alloc] init];
-  
+
   for(id route in routes) {
     id from = route[0];
     id to = nil;
-    
+
     [realRoutes addObject:from];
-    
+
     while((to = dict[from]) != nil) {
       [realRoutes addObject:to];
       from = to;
       to = nil;
     }
-    
+
     if([realRoutes count] != ([routes count] + 1)) {
       // Try again
       [realRoutes removeAllObjects];
@@ -34,12 +34,12 @@ NSString* findRoutes(NSArray* routes) {
       break;
     }
   }
-  
+
   NSString* realRoute = [realRoutes componentsJoinedByString:@", "];
-  
+
   [dict release];
   [realRoutes release];
-  
+
   return realRoute;
 }
 

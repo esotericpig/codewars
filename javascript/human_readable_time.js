@@ -1,7 +1,7 @@
 /**
  * I have no idea why this is 5 kyu...
- * 
- * @author Jonathan Bradley Whited (@esotericpig)
+ *
+ * @author Jonathan Bradley Whited
  * @see    https://www.codewars.com/kata/human-readable-time/javascript
  * @rank   5 kyu
  */
@@ -23,7 +23,7 @@ console.log(humanReadable(359999)); // '99:59:59'
 
 if(process.argv.length > 2) {
   console.log();
-  
+
   for(var i = 2; i < process.argv.length; ++i) {
     var secs = process.argv[i];
     console.log(secs + ' => ' + humanReadable(secs));
