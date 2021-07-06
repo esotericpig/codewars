@@ -102,6 +102,23 @@ This is how I (compile and) run these solutions on my system ([Fedora](https://g
 
 The language version is usually just behind the latest version.
 
+If you're familiar with `Rake`, you can alternatively use this:
+
+```
+$ rake -T
+
+$ rake build -- cpp/build_tower.cc
+$ rake run -- cpp/build_tower.cc 33
+
+$ rake build -- java/SimplePigLatin.java
+$ rake run -- java/SimplePigLatin.java 'Monkey Burger'
+
+### Dry run.
+$ rake clean[t]
+### Actually clean.
+$ rake clean
+```
+
 - CoffeeScript:
     - `$ sudo npm install --global coffeescript`
     - `$ coffee <name>.coffee <args>`
