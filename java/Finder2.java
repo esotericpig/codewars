@@ -1,11 +1,15 @@
+import java.awt.Point;
+
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * <pre>
@@ -37,20 +41,25 @@ import java.util.Scanner;
 public class Finder2 {
   public static int pathFinder(String mazeStr) {
     Maze maze = new Maze(mazeStr);
+
     Glader.DEFAULT_LEN = maze.getSize() * 4;
     Gladers gladers = new Gladers(maze,100);
 
     // Generations
-    for(int i = 0; i < 1000; ++i) {
+    for(int i = 0; i < 10_000; ++i) {
       gladers.evolve(maze);
       System.out.print("\r" + (i + 1) + ": " + gladers.getBest().getMinDistance());
-      System.out.print(", " + gladers.getBest().getMinSteps() + "          ");
+      System.out.print(", " + gladers.getBest().getMinSteps());
+      System.out.print(", " + gladers.getBestFitness());
+      System.out.print("\t\t\t\t"); // Clear overflow.
 
-      /*if(i == 100000) {
-        System.out.println("Changing...");
-        Gladers.mutateChance = 90.0 / 100.0;
-        Gladers.mutatePercent = 90;
-      }*/
+      if(i == 5000) {
+        System.out.println("\nChanging...");
+
+        //Gladers.mutateChance  = 0.90;
+        //Gladers.mutatePercent = 0.90;
+        Gladers.selectBy      = Gladers.SelectBy.TOURNEY;
+      }
 
       //if(gladers.getBest().getResult() != -1) { break; }
     }
@@ -71,7 +80,7 @@ public class Finder2 {
   }
 
   public static void main(String[] args) {
-    // Random maze
+    /* Random maze
     StringBuilder mazeStr = new StringBuilder();
     Random rand = new Random();
     int size = 25;
@@ -88,7 +97,7 @@ public class Finder2 {
       mazeStr.append("\n");
     }
 
-    pathFinder(mazeStr.toString());
+    pathFinder(mazeStr.toString());*/
 
     /* 14
     pathFinder((
@@ -112,7 +121,7 @@ public class Finder2 {
     ". . . . W .").replace(" ","")
     );*/
 
-    /* 96
+    // 96
     pathFinder((
     ". W . . . W . . . W . . .\n" +
     ". W . W . W . W . W . W .\n" +
@@ -127,7 +136,7 @@ public class Finder2 {
     ". W . W . W . W . W . W .\n" +
     ". W . W . W . W . W . W .\n" +
     ". . . W . . . W . . . W .").replace(" ","")
-    );*/
+    );
   }
 }
 
@@ -143,93 +152,98 @@ public class Finder2 {
  */
 
 class Gladers {
-  private Glader best;
-  private double bestFitness;
+  private Glader best = null;
+  private double bestFitness = -1.0;
   private Glader[] gladers;
 
+  private double[] fitnesses;
+  private double totalFitness;
+
+  private double[] ranks;
+
   // These are the percentages that worked best for me
-  public static double mateChance = 90.0 / 100.0;
-  public static double mutateChance = 35.0 / 100.0;
-  public static double mutatePercent = 25.0 / 100.0;
+  public static double mateChance    = 0.90;
+  public static double mutateChance  = 0.35;
+  public static double mutatePercent = 0.25;
+
+  public static SelectBy selectBy = SelectBy.RANK;
+
+  public static enum SelectBy {
+    RANK, TOURNEY,
+  }
+
+  // Percentage of competitors in the tourney.
+  public static double selectByTourneyCompetitors = 0.10;
 
   public Gladers(Maze maze,int initSize) {
     gladers = new Glader[initSize];
 
+    fitnesses = new double[initSize];
+    totalFitness = 0.0;
+
     for(int i = 0; i < gladers.length; ++i) {
-      gladers[i] = new Glader(maze.getSize());
+      addGlader(maze,gladers,i,new Glader(maze.getSize()));
+    }
+  }
+
+  public int addGlader(Maze maze,Glader[] gladers,int index,Glader glader) {
+    double fitness = glader.runForFitness(maze);
+
+    fitnesses[index] = fitness;
+    totalFitness += fitness;
+
+    // Shortest distance (min) is best fitness.
+    if(best == null || fitness < bestFitness) {
+      best = glader;
+      bestFitness = fitness;
     }
 
-    best = gladers[0];
-    bestFitness = best.runForFitness(maze);
+    gladers[index] = glader;
+
+    return ++index;
   }
 
   // For a good explanation: http://geneticalgorithms.ai-depot.com/Tutorial/Overview.html
   public void evolve(Maze maze) {
-    double[] fitness = new double[gladers.length];
-    double fitnessOfAll = 0.0;
-
-    for(int i = 0; i < gladers.length; ++i) {
-      Glader g = gladers[i];
-      fitness[i] = g.runForFitness(maze);
-      fitnessOfAll += fitness[i];
-
-      // Shortest distance (min) is best fitness
-      if(fitness[i] < bestFitness) {
-        best = g;
-        bestFitness = fitness[i];
-      }
-    }
-
-    double[] chance = new double[gladers.length];
-    double chanceOfAll = 0.0;
-
-    for(int i = 0; i < gladers.length; ++i) {
-      // Do "(fitnessOfAll - fitness[i])" because min fitness is best
-      chance[i] = fitnessOfAll + ((fitnessOfAll - fitness[i]) / fitnessOfAll);
-      chanceOfAll += chance[i];
-    }
+    initSelect();
 
     Glader[] newGladers = new Glader[gladers.length];
 
-    newGladers[0] = best; // Always carry best into new population
+    int i = 0;
+    totalFitness = 0.0;
+
+    i = addGlader(maze,newGladers,i,best); // Elitism.
 
     // This is to get out of peaks/valleys
-    newGladers[1] = new Glader(maze.getSize(),Step.N);
-    newGladers[2] = new Glader(maze.getSize(),Step.S);
-    newGladers[3] = new Glader(maze.getSize(),Step.E);
-    newGladers[4] = new Glader(maze.getSize(),Step.W);
-    newGladers[5] = new Glader(maze.getSize());
-
-    //gladers[gladers.length - 5] = new Glader(maze.getSize(),Step.N);
-    //gladers[gladers.length - 4] = new Glader(maze.getSize(),Step.S);
-    //gladers[gladers.length - 3] = new Glader(maze.getSize(),Step.E);
-    //gladers[gladers.length - 2] = new Glader(maze.getSize(),Step.W);
-    //gladers[gladers.length - 1] = new Glader(maze.getSize());
+    i = addGlader(maze,newGladers,i,new Glader(maze.getSize(),Step.N));
+    i = addGlader(maze,newGladers,i,new Glader(maze.getSize(),Step.S));
+    i = addGlader(maze,newGladers,i,new Glader(maze.getSize(),Step.E));
+    i = addGlader(maze,newGladers,i,new Glader(maze.getSize(),Step.W));
+    i = addGlader(maze,newGladers,i,new Glader(maze.getSize()));
 
     Random rand = new Random();
 
-    for(int i = 6; i < gladers.length; ++i) {
-      Glader g = gladers[i];
-      Glader newG = g;
+    for(; i < gladers.length; ++i) {
+      int newI = select(rand,-1);
+      Glader newG = gladers[newI];
 
-      if(rand.nextDouble() <= mateChance) {
-        // Arbitrary names, could be dad & dad
-        Glader mom = selectParent(rand,chance);
-        Glader dad = selectParent(rand,chance);
+      if(rand.nextDouble() < mateChance) {
+        Glader partner = gladers[select(rand,newI)];
 
-        newG = mom.mateWith(dad);
+        newG = newG.mateWith(partner);
       }
-      if(rand.nextDouble() <= mutateChance) {
+
+      if(rand.nextDouble() < mutateChance) {
         newG = newG.mutateByPercent(mutatePercent);
       }
 
-      newGladers[i] = newG;
+      addGlader(maze,newGladers,i,newG);
     }
 
     gladers = newGladers;
   }
 
-  public Glader selectParent(Random rand,double[] chance) {
+  /*public Glader selectParent(Random rand,double[] chance) {
     double randParent = rand.nextDouble();
 
     for(int i = 0; i < gladers.length; ++i) {
@@ -238,6 +252,134 @@ class Gladers {
       }
     }
     return gladers[gladers.length - 1];
+  }*/
+
+  public void initSelect() {
+    switch(selectBy) {
+      case RANK:
+        this.ranks = buildRanks();
+        break;
+
+      case TOURNEY:
+        break;
+    }
+  }
+
+  public int select(Random rand,int partnerIndex) {
+    switch(selectBy) {
+      case RANK:
+        return selectByRank(this.ranks,rand,partnerIndex);
+
+      case TOURNEY:
+        return selectByTourney(rand,partnerIndex);
+
+      default:
+        throw new RuntimeException("Invalid SelectBy: " + selectBy);
+    }
+  }
+
+  public double[] buildRanks() {
+    double[] ranks = Arrays.copyOf(fitnesses,fitnesses.length);
+    Arrays.sort(ranks);
+
+    // Gauss Summation.
+    double rankSum = (ranks.length + 1) * (ranks.length / 2.0);
+    double currentSum = 0.0;
+
+    for(int i = 0; i < ranks.length; ++i) {
+      // (length - 1) because rank 0 is best.
+      double slice = (ranks.length - i) / rankSum;
+
+      currentSum += slice;
+      ranks[i] = currentSum;
+    }
+
+    // Last rank must be 1.0.
+    ranks[ranks.length - 1] = 1.0;
+
+    return ranks;
+  }
+
+  /**
+   * Same as Roulette Wheel. Does binary search.
+   */
+  public int selectByRank(double[] ranks,Random rand,int partnerIndex) {
+    double randSlice = rand.nextDouble();
+    int length = ranks.length;
+
+    int leftIndex = 0;
+    int middleIndex = 0;
+    int rightIndex = length - 1;
+
+    while(leftIndex <= rightIndex) {
+      middleIndex = (leftIndex + rightIndex) / 2;
+
+      double slice = ranks[middleIndex];
+
+      if(slice < randSlice) {
+          leftIndex = middleIndex + 1;
+      }
+      else if(slice > randSlice) {
+          rightIndex = middleIndex - 1;
+      }
+      // slice == randSlice
+      else {
+        leftIndex = middleIndex - 1;
+        break;
+      }
+    }
+
+    int selectionIndex = leftIndex;
+
+    // Make sure not an invalid index.
+    if(selectionIndex < 0) {
+      selectionIndex = 0;
+    }
+    else if(selectionIndex >= length) {
+      selectionIndex = (length >= 1) ? (length - 1) : 0;
+    }
+
+    // Try to avoid asexual reproduction (same parents),
+    //   where partner_index is the current partner (other parent).
+    if(selectionIndex == partnerIndex) {
+      if(selectionIndex > 0) {
+        selectionIndex -= 1;
+      }
+      else if(length >= 2) {
+        selectionIndex += 1;  // 0 => 1
+      }
+    }
+
+    return selectionIndex;
+  }
+
+  public int selectByTourney(Random rand,int partnerIndex) {
+    int k = (int)(gladers.length * selectByTourneyCompetitors);
+
+    // Select a current top competitor.
+    int winner;
+    do {
+      winner = rand.nextInt(gladers.length);
+    } while(winner == partnerIndex);
+
+    double winnerFitness = fitnesses[winner];
+
+    for(int i = 0; i < k; ++i) {
+      // Select a competitor.
+      int competitor;
+      do {
+        competitor = rand.nextInt(gladers.length);
+      } while(competitor == partnerIndex);
+
+      double f = fitnesses[competitor];
+
+      if(f < winnerFitness) {
+        winner = competitor;
+        winnerFitness = f;
+      }
+    }
+
+    return winner;
   }
 
   public Glader getBest() { return best; }
@@ -341,12 +483,23 @@ class Glader {
     result = 0;
     int steps = 0;
 
+    Set<Point> repeatedPoints = new HashSet<>();
+    int repeatedSteps = 0;
+
     for(Step s: path) {
       int lookX = s.takeStepX(x);
       int lookY = s.takeStepY(y);
 
       if(maze.isEmpty(lookX,lookY)) {
         x = lookX; y = lookY;
+        Point point = new Point(x,y);
+
+        if(repeatedPoints.contains(point)) {
+          ++repeatedSteps;
+        }
+        else {
+          repeatedPoints.add(point);
+        }
 
         //int distance = Glader.getManhattanDistance(x,y,goalX,goalY);
         int distance = Glader.getDistance(maze,x,y,goalX,goalY);
@@ -369,7 +522,10 @@ class Glader {
 
     //int realDistance = Glader.getDistance(maze,x,y,goalX,goalY);
     //fitness = minDistance + steps + realDistance;
+
     fitness = minDistance * 4 + minSteps; // * 4 is sweet spot
+
+    fitness += (repeatedSteps * 1.0);
 
     result = hitGoal ? result : -1;
 
