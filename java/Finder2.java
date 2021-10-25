@@ -342,12 +342,17 @@ class Gladers {
     // Try to avoid asexual reproduction (same parents),
     //   where partner_index is the current partner (other parent).
     if(selectionIndex == partnerIndex) {
-      if(selectionIndex > 0) {
+      /*if(selectionIndex > 0) {
         selectionIndex -= 1;
       }
       else if(length >= 2) {
         selectionIndex += 1;  // 0 => 1
-      }
+      }*/
+
+      // Just select one randomly.
+      do {
+        selectionIndex = rand.nextInt(gladers.length);
+      } while(selectionIndex == partnerIndex);
     }
 
     return selectionIndex;
