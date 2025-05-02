@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  * Later, I added #makeSecret(...) for fun.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/recover-a-secret-string-from-random-triplets/java
  * @rank   4 kyu
  */

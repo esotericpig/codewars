@@ -2,7 +2,7 @@
 <?php
 
 /**
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/equal-sides-of-an-array/php
  * @rank   6 kyu
  */

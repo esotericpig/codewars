@@ -33,7 +33,7 @@ import java.util.Set;
  * - Not guaranteed to find the ultimate solution (but this is more "human").
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/path-finder-number-2-shortest-path/java
  * @see    http://geneticalgorithms.ai-depot.com/Tutorial/Overview.html
  * @rank   4 kyu
@@ -45,15 +45,18 @@ public class Finder2 {
     Glader.DEFAULT_LEN = maze.getSize() * 4;
     Gladers gladers = new Gladers(maze,100);
 
-    // Generations
-    for(int i = 0; i < 10_000; ++i) {
+    // Generations.
+    final int maxGen = 2_000;
+    Gladers.selectBy = Gladers.SelectBy.RANK;
+
+    for(int i = 0; i < maxGen; ++i) {
       gladers.evolve(maze);
       System.out.print("\r" + (i + 1) + ": " + gladers.getBest().getMinDistance());
       System.out.print(", " + gladers.getBest().getMinSteps());
       System.out.print(", " + gladers.getBestFitness());
       System.out.print("\t\t\t\t"); // Clear overflow.
 
-      if(i == 5000) {
+      if(i == (maxGen / 2)) {
         System.out.println("\nChanging...");
 
         //Gladers.mutateChance  = 0.90;
@@ -80,7 +83,7 @@ public class Finder2 {
   }
 
   public static void main(String[] args) {
-    /* Random maze
+    // Random maze
     StringBuilder mazeStr = new StringBuilder();
     Random rand = new Random();
     int size = 25;
@@ -91,13 +94,13 @@ public class Finder2 {
           mazeStr.append(Maze.EMPTY);
         }
         else {
-          mazeStr.append(rand.nextInt(4) == 0 ? Maze.WALL : Maze.EMPTY);
+          mazeStr.append(rand.nextInt(3) == 0 ? Maze.WALL : Maze.EMPTY);
         }
       }
       mazeStr.append("\n");
     }
 
-    pathFinder(mazeStr.toString());*/
+    pathFinder(mazeStr.toString());
 
     /* 14
     pathFinder((
@@ -122,21 +125,21 @@ public class Finder2 {
     );*/
 
     // 96
-    pathFinder((
-    ". W . . . W . . . W . . .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". W . W . W . W . W . W .\n" +
-    ". . . W . . . W . . . W .").replace(" ","")
-    );
+    //pathFinder((
+    //". W . . . W . . . W . . .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". W . W . W . W . W . W .\n" +
+    //". . . W . . . W . . . W .").replace(" ","")
+    //);
   }
 }
 

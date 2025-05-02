@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  *   even more, but I'm not sure how right now.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/assembler-interpreter-part-ii/java
  * @see    https://en.wikipedia.org/wiki/Assembly_language
  * @see    https://en.wikipedia.org/wiki/Assembly_language#Number_of_passes

@@ -2,7 +2,7 @@
 # This one seems pretty useful if you need to save up to buy a new car
 #   (or anything).
 #
-# AUTHOR: Jonathan Bradley Whited
+# AUTHOR: Bradley Whited
 # SEE:    https://www.codewars.com/kata/buying-a-car/crystal
 # RANK:   6 kyu
 ###

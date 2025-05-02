@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  *   which used one regex, dumb.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/simple-pig-latin/java
  * @rank   5 kyu
  */

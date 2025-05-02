@@ -8,7 +8,7 @@
 #   /python/sudoku_solver.py and changed it to validate, instead of to solve.
 # Because of this, I solved it very quickly.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/validate-sudoku-with-size-nxn/ruby
 # @see    https://ruby-doc.org/core-2.5.1/Array.html#method-i-transpose
 # @rank   4 kyu

@@ -4,7 +4,7 @@
 # For fun, I made this solution that shows the pyramid and the longest slide
 #   down.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###

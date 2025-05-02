@@ -6,7 +6,7 @@
 # The best solution used a similar approach but divided by 2 down, which is far
 #   less code and more clever.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/double-cola/ruby
 # @rank   5 kyu
 ###

@@ -4,7 +4,7 @@
 # This is actually the reverse of standard form, but Katas do this sometimes to
 #   help prevent against using pre-built libraries.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/simplifying-multilinear-polynomials/ruby
 # @see    https://en.wikipedia.org/wiki/Multilinear_polynomial
 # @see    https://www.mathsisfun.com/algebra/polynomials.html

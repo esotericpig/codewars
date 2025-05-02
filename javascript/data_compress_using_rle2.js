@@ -1,7 +1,7 @@
 /**
  * This was my 2nd solution using anonymous functions.
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/data-compression-using-run-length-encoding/javascript
  * @see    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
  * @see    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat

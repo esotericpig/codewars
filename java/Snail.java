@@ -9,7 +9,7 @@ import java.util.Arrays;
  * If it hits a wall, I change the (x,y) direction (step).
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/snail/java
  * @rank   4 kyu
  */

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * I looked at the OpenJDK source code, and just hoped that it would be the same.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/psychic/java
  * @see    https://docs.oracle.com/javase/8/docs/api/java/lang/Class.html
  * @see    https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Field.html

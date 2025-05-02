@@ -4,7 +4,7 @@
 # For this solution, I used the computed values from the first solution to make
 #   the code size smaller (and technically faster).
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/roman-numerals-helper/ruby
 # @rank   4 kyu
 ###

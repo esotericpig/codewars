@@ -6,7 +6,7 @@
 # For my solution, I simply shifted/aligned the words to find the optimal (min)
 #   difference of changes.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/did-you-mean-dot-dot-dot/ruby
 # @rank   5 kyu
 ###

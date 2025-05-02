@@ -3,7 +3,7 @@
 #
 # For a library, it would need UInt64/BigInt/String overloads.
 #
-# AUTHOR: Jonathan Bradley Whited
+# AUTHOR: Bradley Whited
 # SEE:    https://www.codewars.com/kata/ninety-nine-thousand-nine-hundred-ninety-nine/crystal
 # RANK:   5 kyu
 ###

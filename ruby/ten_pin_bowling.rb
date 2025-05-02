@@ -4,7 +4,7 @@
 # My solution uses multipliers (factors) for the previous spares/strikes.
 # I didn't see anyone else use this idea.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/ten-pin-bowling/ruby
 # @rank   4 kyu
 ###

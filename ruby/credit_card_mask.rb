@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 ###
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/credit-card-mask/ruby
 # @rank   7 kyu
 ###

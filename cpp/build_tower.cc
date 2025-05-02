@@ -4,7 +4,7 @@
 #include <vector>
 
 /**
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/build-tower/cpp
  * @rank   6 kyu
  */

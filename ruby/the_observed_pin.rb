@@ -10,7 +10,7 @@
 # I could have sworn I did a similar thing to this in college, related to Gray
 #   codes or something else, but I couldn't find the project and/or remember.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/the-observed-pin/ruby
 # @see    https://en.wikipedia.org/wiki/Von_Neumann_neighborhood
 # @see    https://en.wikipedia.org/wiki/Gray_code

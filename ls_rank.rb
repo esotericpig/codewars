@@ -16,7 +16,7 @@ end
 #
 # Ruby v2.4+ required.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 ###
 class LsRank
   VERSION = '1.2.2'

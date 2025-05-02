@@ -3,7 +3,7 @@
 #include <string>
 
 /**
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/highest-scoring-word/cpp
  * @rank   6 kyu
  */

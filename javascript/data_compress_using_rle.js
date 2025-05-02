@@ -2,7 +2,7 @@
  * This was my original solution.
  * I didn't know replace(...) could take a function.
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/data-compression-using-run-length-encoding/javascript
  * @see    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec
  * @see    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/repeat

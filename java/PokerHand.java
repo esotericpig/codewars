@@ -16,7 +16,7 @@ import java.util.Arrays;
  * My solution is about O(2N) I believe.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/ranking-poker-hands/java
  * @see    https://en.wikipedia.org/wiki/Texas_hold_%27em#Hand_values
  * @rank   4 kyu

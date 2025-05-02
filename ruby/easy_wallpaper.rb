@@ -3,7 +3,7 @@
 ###
 # The site in @see helped me to visualize it lol.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/easy-wallpaper/ruby
 # @see    https://www.ducksters.com/kidsmath/finding_the_volume_of_a_cube_or_box.php
 # @rank   7 kyu

@@ -23,7 +23,7 @@ Unlike /python/sudoku_solver.py, I decided to use a bit board to represent the
 In the future, I would like to make a Sudoku project (probably in Ruby, sorry
   Python) that implements more strategies.
 
-author: Jonathan Bradley Whited
+author: Bradley Whited
 see:    https://www.codewars.com/kata/hard-sudoku-solver/python
 see:    https://www.learn-sudoku.com/basic-techniques.html
 see:    https://www.kristanix.com/sudokuepic/sudoku-solving-techniques.php

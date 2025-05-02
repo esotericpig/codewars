@@ -4,7 +4,7 @@
  * However, an array list requires far less code.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/circular-list/java
  * @rank   7 kyu
  */

@@ -4,7 +4,7 @@
 # For fun, I added an additional challenge of not using String/Array ops
 #   [except for Array.include?()].
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/catching-car-mileage-numbers/ruby
 # @rank   4 kyu
 ###

@@ -12,7 +12,7 @@ import java.util.LinkedList;
  *   overlook simple solutions.
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/valid-braces/java
  * @see    https://en.wikipedia.org/wiki/Shunting-yard_algorithm
  * @rank   6 kyu

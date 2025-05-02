@@ -12,7 +12,7 @@ If there was only 1 number left, I had found the value for that position.
 
 A group is basically a Moore neighborhood (3x3), but only 9 groups.
 
-author: Jonathan Bradley Whited
+author: Bradley Whited
 see:    https://www.codewars.com/kata/sudoku-solver/python
 see:    https://en.wikipedia.org/wiki/Sudoku
 see:    https://en.wikipedia.org/wiki/Moore_neighborhood

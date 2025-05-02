@@ -17,7 +17,7 @@ import java.util.Scanner;
  * "Glader" comes from the book/film series called "Maze Runner."
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/path-finder-number-2-shortest-path/java
  * @see    http://www.growingwiththeweb.com/2012/06/a-pathfinding-algorithm.html
  * @see    https://en.wikipedia.org/wiki/Maze_Runner_(film_series)

@@ -5,7 +5,7 @@ import sys
 """
 My solution was not the sexiest, but I just liked this Kata.
 
-author: Jonathan Bradley Whited
+author: Bradley Whited
 see:    https://www.codewars.com/kata/who-likes-it/python
 rank:   6 kyu
 """

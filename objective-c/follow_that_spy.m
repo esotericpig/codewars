@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 /**
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/follow-that-spy/objc
  * @rank   6 kyu
  */

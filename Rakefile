@@ -12,7 +12,7 @@
 #   rake clean[t] # Dry run.
 #   rake clean
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 ###
 
 

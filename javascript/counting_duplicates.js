@@ -1,5 +1,5 @@
 /**
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/counting-duplicates/javascript
  * @rank   6 kyu
  */

@@ -9,7 +9,7 @@ import java.util.TreeSet;
  *   Arrays#sort(...)/Collections#sort(...).
  * </pre>
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/length-of-missing-array/java
  * @rank   6 kyu
  */

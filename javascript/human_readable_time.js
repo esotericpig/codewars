@@ -1,7 +1,7 @@
 /**
  * I have no idea why this is 5 kyu...
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/human-readable-time/javascript
  * @rank   5 kyu
  */

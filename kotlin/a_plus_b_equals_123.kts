@@ -1,7 +1,7 @@
 /**
  * Seemed easy, but B can't be negative.
  *
- * @author Jonathan Bradley Whited
+ * @author Bradley Whited
  * @see    https://www.codewars.com/kata/a-plus-b-equals-equals-123/kotlin
  * @rank   6 kyu
  */

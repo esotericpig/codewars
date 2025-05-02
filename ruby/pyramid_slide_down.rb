@@ -6,7 +6,7 @@
 # For this solution, I started at the bottom, compared pairs for the max, and
 #   then continued to move up the pyramid.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###

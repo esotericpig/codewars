@@ -4,7 +4,7 @@
 # For this solution, I decided to compute the sub(tract) roman numerals
 #   during runtime.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/roman-numerals-helper/ruby
 # @rank   4 kyu
 ###

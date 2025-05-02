@@ -12,7 +12,7 @@ require 'open-uri'
 # Originally, I used nokogiri because I expected to use its functionality, but
 #   then all I ended up doing was parsing the content as a String out of laziness.
 #
-# @author Jonathan Bradley Whited
+# @author Bradley Whited
 # @see    https://www.codewars.com/kata/roman-numerals-helper/ruby
 # @rank   4 kyu
 ###
