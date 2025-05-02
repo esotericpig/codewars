@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # I love pyramids.
@@ -10,16 +10,15 @@
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###
-def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[0])
+def longest_slide_down(pyramid,y = pyramid.length - 1,bottom = [0])
   return bottom[0] + pyramid[0][0] if y == 0
 
   row_len = pyramid[y].length
   bottom *= row_len if bottom.length == 1
-  bottom.map!.with_index{|cost,x| cost + pyramid[y][x]}
-  row = []
+  bottom.map!.with_index { |cost,x| cost + pyramid[y][x] }
 
-  for x in 0..row_len - 2
-    row.push(bottom[x..x + 1].max)
+  row = (0..row_len - 2).map do |x|
+    bottom[x..x + 1].max
   end
 
   longest_slide_down(pyramid,y - 1,row)

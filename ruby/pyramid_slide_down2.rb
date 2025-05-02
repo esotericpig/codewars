@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # For fun, I made this solution that shows the pyramid and the longest slide
@@ -8,15 +8,15 @@
 # @see    https://www.codewars.com/kata/pyramid-slide-down/ruby
 # @rank   4 kyu
 ###
-def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[Slide.new])
+def longest_slide_down(pyramid,y = pyramid.length - 1,bottom = [Slide.new])
   if y == 0
     bottom[0].cost += pyramid[0][0]
 
-    # Show the pyramid and the longest slide down as dots
+    # Show the pyramid and the longest slide down as dots.
     child = Slide.new(0,bottom[0],0,0)
     until (child = child.child).nil?
-      print (' ' * ((pyramid.length - 1 - child.y) * 2))
-      pyramid[child.y].each_with_index{|c,x| print (x == child.x) ? ' . ' : ('%3d ' % [c])}
+      print(' ' * ((pyramid.length - 1 - child.y) * 2))
+      pyramid[child.y].each_with_index { |c,x| print (x == child.x) ? ' . ' : format('%3d ',c) }
       puts
     end
     puts "Longest slide down: #{bottom[0].cost}"
@@ -26,14 +26,17 @@ def longest_slide_down(pyramid,y=pyramid.length - 1,bottom=[Slide.new])
 
   row_len = pyramid[y].length
 
-  # Can't use *= because we need new objects (not all the same reference)
-  bottom = Array.new(row_len){|x| Slide.new(0,nil,x,y)} if bottom.length == 1
-  bottom.map!.with_index{|slide,x| slide.cost += pyramid[y][x]; slide}
+  # Can't use *= because we need new objects (not all the same reference).
+  bottom = Array.new(row_len) { |x| Slide.new(0,nil,x,y) } if bottom.length == 1
+  bottom.map!.with_index do |slide,x|
+    slide.cost += pyramid[y][x]
+    slide
+  end
 
   row = []
   y -= 1
 
-  for x in 0..row_len - 2
+  (0..row_len - 2).each do |x|
     child = bottom[x..x + 1].max
     row.push(Slide.new(child.cost,child,x,y))
   end
@@ -44,14 +47,14 @@ end
 class Slide
   attr_accessor :child,:cost,:x,:y
 
-  def initialize(cost=0,child=nil,x=0,y=0)
+  def initialize(cost = 0,child = nil,x = 0,y = 0)
     @child = child
     @cost = cost
     @x = x
     @y = y
   end
 
-  # Needed for [].max()
+  # Needed for [].max().
   def <=>(other)
     @cost <=> other.cost
   end

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 #require 'nokogiri'
 require 'open-uri'
@@ -17,18 +17,23 @@ require 'open-uri'
 # @rank   4 kyu
 ###
 class RomanNumerals
-  def self.google(value,query)
-    #doc = Nokogiri::HTML(open("https://www.google.com/search?q=#{value}+#{query}"),nil,'utf-8').to_s
-    doc = open("https://www.google.com/search?q=#{value}+#{query}").read
-    doc.slice(doc.index("#{value} = "),100).gsub(/\A.*=[[:space:]]+/,'').gsub(/\<.*\z/,'')
+  def self.google_it(value,query)
+    #doc = Nokogiri::HTML(URI("https://www.google.com/search?q=#{value}+#{query}").open,nil,'utf-8').to_s
+    #doc = URI("https://www.google.com/search?q=#{value}+#{query}").read
+    #doc.slice(doc.index("#{value} = "),100).gsub(/\A.*=[[:space:]]+/,'').gsub(/<.*\z/,'')
+
+    # UPDATE: In 2025, changed to use DuckDuckGo, as Google & Bing require User-Agent, etc.
+    url = "https://duckduckgo.com/?q=#{value}+#{query}&ia=answer"
+    doc = URI(url).read
+    doc.match(/"\s*output_value\s*"\s*:[\s"]*(?<answer>[^",]+)/)[:answer].strip
   end
 
   def self.to_roman(num)
-    google(num,'to+roman+numerals')
+    google_it(num,'to+roman+numerals')
   end
 
   def self.from_roman(roman)
-    google(roman,'to+arabic').to_i
+    google_it(roman,'to+arabic+numerals').to_i
   end
 end
 
@@ -54,7 +59,7 @@ test_from('IV',4)
 test_from('MMVIII',2008)
 test_from('MDCLXVI',1666)
 
-puts if ARGV.length > 0
+puts unless ARGV.empty?
 ARGV.each do |arg|
   print "#{arg} => "
   puts (arg =~ /\d/) ? RomanNumerals.to_roman(arg.to_i) : RomanNumerals.from_roman(arg)

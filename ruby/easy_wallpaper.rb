@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # The site in @see helped me to visualize it lol.
@@ -15,15 +15,14 @@ def wallpaper(l,w,h)
   total = total_w + total_l
   rolls = total / (0.52 * 10.0)
   rolls += (rolls * 0.15)
-  rolls = rolls.ceil()
-  rolls = (rolls < 1) ? 0 : rolls
+  rolls = rolls.ceil
+  rolls = 0 if rolls < 1
   get_num_word(rolls)
 end
 
 def get_num_word(num)
-  num_words = %w(zero one two three four five six seven eight nine ten
-    eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen
-    nineteen twenty)
+  num_words = %w[zero one two three four five six seven eight nine ten
+                 eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty]
   num_words[num]
 end
 

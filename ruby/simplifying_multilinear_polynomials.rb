@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # This is actually the reverse of standard form, but Katas do this sometimes to
@@ -26,7 +26,7 @@ def simplify(poly)
   end
 
   # There is probably a better way than using first...
-  first,result = true,''
+  first,result = true,''.dup
 
   terms.values.sort.each do |t|
     result << t.to_s(first)
@@ -50,8 +50,8 @@ class Term
     (@coeff <=> other.coeff)
   end
 
-  def to_s(first=false)
-    s = (@coeff == -1) ? '-' : (!first && @coeff >= 0) ? '+' : ''
+  def to_s(first = false)
+    s = ((@coeff == -1) ? '-' : (!first && @coeff >= 0) ? '+' : '').dup
     s << @coeff.to_s if @coeff.abs != 1
     s << @var
   end

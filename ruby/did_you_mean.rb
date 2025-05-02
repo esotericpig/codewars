@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # This was a fun Kata that could be useful for real-world projects.
@@ -19,7 +19,7 @@ class Dictionary
     most_similar = @words.first
     most_similar_diff = diff(most_similar,term)
 
-    for i in 1...@words.length
+    (1...@words.length).each do |i|
       word = @words[i]
       diff = diff(word,term)
 
@@ -33,13 +33,13 @@ class Dictionary
     most_similar
   end
 
-  def diff(word,term,index=0)
+  def diff(word,term,index = 0)
     min,max = (word.length < term.length) ? [word,term] : [term,word]
     return max.length if (index + min.length) > max.length
 
     result = max.length - min.length
 
-    for i in 0...min.length
+    (0...min.length).each do |i|
       result += 1 if min[i] != max[index + i]
     end
 
@@ -51,8 +51,8 @@ languages = Dictionary.new(['javascript','java','ruby','php','python','coffeescr
 languages.find_most_similar('heaven') # 'java'
 languages.find_most_similar('fun')    # 'ruby' of course ;)
 
-words=['cherry','peach','pineapple','melon','strawberry','raspberry','apple','coconut','banana']
-test_dict=Dictionary.new(words)
+words = ['cherry','peach','pineapple','melon','strawberry','raspberry','apple','coconut','banana']
+test_dict = Dictionary.new(words)
 test_dict.find_most_similar('strawbery') # 'strawberry'
 test_dict.find_most_similar('berry')     # 'cherry'
 test_dict.find_most_similar('aple')      # 'apple'

@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # In Ruby, this was super easy.
@@ -7,9 +7,9 @@
 # @see    https://www.codewars.com/kata/calculating-with-functions/ruby
 # @rank   5 kyu
 ###
-%w(zero one two three four five six seven eight nine).each_with_index do |nw,i|
-  define_method(nw) do |y=nil|
-    return y.nil?() ? i : i.method(y[0]).call(y[1])
+%w[zero one two three four five six seven eight nine].each_with_index do |nw,i|
+  define_method(nw) do |y = nil|
+    return y.nil? ? i : i.method(y[0]).call(y[1])
   end
 end
 

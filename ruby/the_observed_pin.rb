@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # The best solution was only 2 lines and used reduce()!
@@ -17,19 +17,19 @@
 # @rank   4 kyu
 ###
 
-# Adjacent digits (neighbors); looks better as ints
+# Adjacent digits (neighbors); looks better as ints.
 DIGITS = {
-  1=>[1,2,4]  ,2=>[1,2,3,5]  ,3=>[2,3,6],
-  4=>[1,4,5,7],5=>[2,4,5,6,8],6=>[3,5,6,9],
-  7=>[4,7,8]  ,8=>[0,5,7,8,9],9=>[6,8,9],
-               0=>[0,8]
-}
-
-# Convert to strings
-# - If you're using an older version of Ruby, you can comment this out and use
-#     observed[...].to_i() in get_pins() instead.
-DIGITS.transform_keys!(&:to_s)              # Ruby v2.5+
-DIGITS.transform_values!{|v| v.map(&:to_s)} # Ruby v2.4+
+  1 => [1,2,4]  ,2 => [1,2,3,5]  ,3 => [2,3,6],
+  4 => [1,4,5,7],5 => [2,4,5,6,8],6 => [3,5,6,9],
+  7 => [4,7,8]  ,8 => [0,5,7,8,9],9 => [6,8,9],
+                 0 => [0,8]
+}.tap do |digits|
+  # Convert to strings.
+  # - If you're using an older version of Ruby, you can comment this out and use
+  #     observed[...].to_i() in get_pins() instead.
+  digits.transform_keys!(&:to_s)                 # Ruby v2.5+
+  digits.transform_values! { |v| v.map(&:to_s) } # Ruby v2.4+
+end.freeze
 
 def get_pins(observed)
   result = []
@@ -37,11 +37,11 @@ def get_pins(observed)
   DIGITS[observed[0]].each do |digit|
     pins = [[digit]] # Double array for length of 1
 
-    for i in 1...observed.length
+    (1...observed.length).each do |i|
       pins = pins.product(DIGITS[observed[i]])
     end
 
-    pins.map!{|pin| pin.flatten.join}
+    pins.map! { |pin| pin.flatten.join }
     result.push(pins)
   end
 

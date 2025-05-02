@@ -1,7 +1,6 @@
 # encoding: UTF-8
 # frozen_string_literal: true
 
-
 ###
 # Usage:
 #   rake -T
@@ -15,16 +14,15 @@
 # @author Bradley Whited
 ###
 
-
 BUILD_DIR = 'build'
 
 CLEAN_FILES = Rake::FileList[
   "#{BUILD_DIR}/",
-  '**/*~','**/*.{class,o,out}',
+  '**/*~',
+  '**/*.{class,o,out}',
 ].exclude(
   '{.git,stock}/**',
 )
-
 
 module Codewars
   @args = nil
@@ -37,8 +35,8 @@ module Codewars
     if i.nil?
       @args = []
     else
-      @args = ARGV.slice!(i..-1)
-      @args = @args[1..-1] # Remove '--'.
+      @args = ARGV.slice!(i..)
+      @args = @args[1..] # Remove `--`.
     end
 
     return @args
@@ -52,7 +50,7 @@ module Codewars
     extname = File.extname(filename).strip.downcase
 
     # Chop off the file.
-    args = args[1..-1] unless args.empty?
+    args = args[1..] unless args.empty?
 
     if !File.file?(filename)
       abort "File not found: #{filename.inspect}"
@@ -74,10 +72,10 @@ module Codewars
   end
 end
 
-# Could do 'git clean -nX' instead.
-#   However, do NOT use '-d' which would delete 'stock/'.
+# Could do `git clean -nX` instead.
+# However, do NOT use `-d` which would delete `stock/`.
 desc 'Clean artifacts'
-task :clean,[:dryrun?] do |t,args|
+task :clean,[:dryrun?] do |_t,args|
   dryrun = !args.dryrun?.to_s.strip.empty?
 
   CLEAN_FILES.each do |filename|
@@ -90,14 +88,12 @@ task :clean,[:dryrun?] do |t,args|
 
     if dryrun
       puts "[DRY ] #{filename}"
-    else
-      if File.file?(filename)
-        puts "[RM  ] #{filename}"
-        rm filename,verbose: false
-      elsif File.directory?(filename)
-        puts "[RMr ] #{filename}"
-        rm_r filename,verbose: false,secure: true
-      end
+    elsif File.file?(filename)
+      puts "[RM  ] #{filename}"
+      rm filename,verbose: false
+    elsif File.directory?(filename)
+      puts "[RMr ] #{filename}"
+      rm_r filename,verbose: false,secure: true
     end
   end
 
@@ -106,7 +102,7 @@ end
 
 desc 'Build file: rake build -- <file> <...args>'
 task :build do |t|
-  Codewars.process_file(t.name) do |args,filename,basename,extname|
+  Codewars.process_file(t.name) do |_args,filename,basename,extname|
     mkdir(BUILD_DIR,verbose: true) unless File.directory?(BUILD_DIR)
 
     case extname

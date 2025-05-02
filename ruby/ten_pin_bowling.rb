@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # My solution uses multipliers (factors) for the previous spares/strikes.
@@ -20,7 +20,7 @@ def bowling_score(frames)
       prev_roll = (f == '/') ? (10 - prev_roll) :
                   (f == 'X') ? 10 : f.to_i
     end
-    rolls = rolls.zip(factors).map{|r,f| r * f}.reduce(&:+)
+    rolls = rolls.zip(factors).map { |r,f| r * f }.reduce(&:+)
 
     factors = [spare  ? 2 :
                strike ? (prev_strike ? [factors[0] + 1,3].min : 2) : 1,

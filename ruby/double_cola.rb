@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # I liked this Kata because it used The Big Bang Theory characters.

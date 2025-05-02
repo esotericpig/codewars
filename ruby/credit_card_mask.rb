@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # @author Bradley Whited
@@ -6,11 +6,11 @@
 # @rank   7 kyu
 ###
 def maskify(cc)
-  cc.each_char.with_index.map{|c,i| (i < (cc.length - 4)) ? '#' : c}.join
+  cc.each_char.with_index.map { |c,i| (i < (cc.length - 4)) ? '#' : c }.join
 end
 
 def maskify2(cc)
-  (cc.length <= 4) ? cc : (('#' * (cc.length - 4)) << cc[-4..-1])
+  (cc.length <= 4) ? cc : (('#' * (cc.length - 4)) << cc[-4..])
 end
 
 puts maskify('4556364607935616')  # '############5616'

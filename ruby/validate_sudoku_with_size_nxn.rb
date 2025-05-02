@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # The best solution used Array.transpose() for the columns/blocks.
@@ -21,15 +21,15 @@ class Sudoku
   end
 
   def is_valid
-    return false if @n < 1 || @puzzle.any?{|row| row.length != @n}
+    return false if @n < 1 || @puzzle.any? { |row| row.length != @n }
     return false if ((@block_n = Math.sqrt(@n)) % 1) != 0
 
     @block_n = @block_n.to_i
-    @blocks = Array.new(@n){[]}
-    @columns = Array.new(@n){[]}
+    @blocks = Array.new(@n) { [] }
+    @columns = Array.new(@n) { [] }
 
-    for y in 0...@n
-      for x in 0...@n
+    (0...@n).each do |y|
+      (0...@n).each do |x|
         value = @puzzle[y][x]
 
         return false if !value.is_a?(Integer) || value < 1 || value > @n
@@ -39,8 +39,8 @@ class Sudoku
       end
     end
 
-    for y in 0...@n
-      for x in 0...@n
+    (0...@n).each do |y|
+      (0...@n).each do |x|
         value = @puzzle[y][x]
 
         return false if get_block(x,y).count(value) > 1
@@ -53,7 +53,7 @@ class Sudoku
   end
 
   def get_block(x,y)
-    @blocks[x / @block_n + (y / @block_n * @block_n)]
+    @blocks[(x / @block_n) + (y / @block_n * @block_n)]
   end
 end
 
@@ -109,7 +109,7 @@ puts Sudoku.new([
 # Example: ruby validate_sudoku_with_size_nxn.rb 1423-3241-4132-2314
 ARGV.each do |arg|
   puts
-  arg = arg.split('-').map{|row| row.gsub(/\s+/,'').chars.map(&:to_i)}
-  arg.each{|row| puts row.join(' ')}
+  arg = arg.split('-').map { |row| row.gsub(/\s+/,'').chars.map(&:to_i) }
+  arg.each { |row| puts row.join(' ') }
   puts "Is valid? #{Sudoku.new(arg).is_valid.to_s.capitalize}"
 end

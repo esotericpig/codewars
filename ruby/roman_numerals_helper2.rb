@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 ###
 # For this solution, I used the computed values from the first solution to make
@@ -12,8 +12,8 @@ class RomanNumerals
   NULLA = 'nulla'
 
   # In reverse order for to_roman(...)
-  ROMAN_NUMS = {'M'=>1000,'CM'=>900,'D'=>500,'CD'=>400,'C'=>100,'XC'=>90,
-                'L'=>50,'XL'=>40,'X'=>10,'IX'=>9,'V'=>5,'IV'=>4,'I'=>1}
+  ROMAN_NUMS = {'M' => 1000,'CM' => 900,'D' => 500,'CD' => 400,'C' => 100,'XC' => 90,
+                'L' => 50,'XL' => 40,'X' => 10,'IX' => 9,'V' => 5,'IV' => 4,'I' => 1}.freeze
   NUM_ROMANS = ROMAN_NUMS.invert
 
   def self.to_roman(num)
@@ -21,7 +21,7 @@ class RomanNumerals
     roman = NUM_ROMANS[num]
     return roman unless roman.nil?
 
-    roman = ''
+    roman = ''.dup
     NUM_ROMANS.each do |value,numeral|
       while num >= value
         num -= value
@@ -67,7 +67,7 @@ test_from('IV',4)
 test_from('MMVIII',2008)
 test_from('MDCLXVI',1666)
 
-puts if ARGV.length > 0
+puts unless ARGV.empty?
 ARGV.each do |arg|
   print "#{arg} => "
   puts (arg =~ /\d/) ? RomanNumerals.to_roman(arg.to_i) : RomanNumerals.from_roman(arg)
